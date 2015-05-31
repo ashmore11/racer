@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "session-amplify": {}
+    },
+    "packages": {
+      "session-amplify": {
+        "git": "https://github.com/cramrov/meteor-session-amplify.git",
+        "tag": "v0.1.1",
+        "commit": "4306d0c60f5c6bd633db237bd4200d832e73a122"
+      }
+    }
+  }
+}

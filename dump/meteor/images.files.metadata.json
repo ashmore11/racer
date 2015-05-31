@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "meteor.images.files", "name" : "_id_" }, { "v" : 1, "key" : { "filename" : 1 }, "ns" : "meteor.images.files", "name" : "filename_1" } ] }

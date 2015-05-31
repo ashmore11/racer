@@ -1,0 +1,1 @@
+@PlayerList = new Meteor.Collection 'players'
