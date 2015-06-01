@@ -19,6 +19,19 @@ template( name="home" )
 
 				if currentUser.profile.coords.speed
 					span speed: {{ currentUser.profile.coords.speed }}
+
+			.score
+				button.update-score increase score
+				span score: {{ currentUser.profile.score }}
+
+			.skill-level
+				select
+					option(value="easy") easy
+					option(value="medium") medium
+					option(value="hard") hard
+					option(value="insane") insane
+
+				span level: {{ currentUser.profile.skill_level }}
 		
 		else
 
