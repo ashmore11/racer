@@ -19,5 +19,4 @@ accounts-base
 accounts-password
 mrt:session-amplify
 mdg:geolocation
-bootstrap
 chrismbeckett:fontawesome4

@@ -2,36 +2,21 @@ template( name="home" )
 
 	#home.page
 
+		.background
+
 		if currentUser
 
-			h1 LOGGED IN
+			.user
+				
+				.name
+					span {{ currentUser.profile.name }}
+				
+				.profile-picture
+					img( src="{{ currentUser.profile.image }}" )
 
-			.user 
-				p USER
-				img( src="{{ currentUser.profile.image }}" )
-				span {{ currentUser.profile.name }}
 
-			.stats 
-				p STATS
-				span accuracy: {{ currentUser.profile.coords.accuracy }}
-				span lat: {{ currentUser.profile.coords.latitude }}
-				span lon: {{ currentUser.profile.coords.longitude }}
-
-				if currentUser.profile.coords.speed
-					span speed: {{ currentUser.profile.coords.speed }}
-
-			.score
-				button.update-score increase score
-				span score: {{ currentUser.profile.score }}
-
-			.skill-level
-				select
-					option(value="easy") easy
-					option(value="medium") medium
-					option(value="hard") hard
-					option(value="insane") insane
-
-				span level: {{ currentUser.profile.skill_level }}
+			.race
+				span FIND RACE
 		
 		else
 
@@ -39,4 +24,5 @@ template( name="home" )
 
 template( name="login" )
 
-	i.fa.fa-facebook
+	.login
+		span LOGIN WITH FACEBOOK

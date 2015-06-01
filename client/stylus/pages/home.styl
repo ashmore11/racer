@@ -1,31 +1,43 @@
 @import 'nib'
 
 #home
+	absolute  : top left
+	width     : 100%
+	height    : 100%
+	text-align: center
 	
-	.fa-facebook
-		font-size: 30px
-		padding  : 20px
-		color    : black
-		margin   : 0 1px
-		cursor   : pointer
+	.background
+		absolute           : top left
+		width              : 100%
+		height             : 100%
+		background-image   : url('images/bkg.jpg')
+		background-size    : cover
+		background-position: 48%
+		z-index            : -1
 		
 	.user
-	.stats
-		margin-bottom: 20px
-		
-	.user
+		.name
+			display         : block
+			background-color: #111
+			padding         : 15px
+			text-transform  : uppercase
+			color           : white
+			margin-bottom   : 10px
+			font-size       : 20px
+			
 		img
 			border-radius: 999px
-			width        : 150px
+			width        : 100px
+			
+	.race
+	.login
+		absolute        : bottom left
+		width           : 98%
+		padding         : 40px 0
+		color           : white
+		font-size       : 20px
+		background      : linear-gradient( top, #111, #222, #111 )
+		margin          : 1%
 		
-	p
-		font-weight    : bold
-		text-decoration: underline
-		margin-bottom  : 10px
-		
-	span
-		display: block
-		margin : 5px
-		
-	.update-score
-		//
+	.login
+		background: linear-gradient( top, #355088, #3B5998, #355088 )

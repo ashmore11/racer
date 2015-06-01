@@ -1,4 +1,60 @@
 @import 'nib'
 
 #nav
-	//
+	absolute   : top right
+	height     : 100%
+	width      : 100%
+	z-index    : 999
+	background : rgba(black, 0.9)
+	transition : transform 1s cubic-bezier( 0.23, 1, 0.32, 1 )
+	transform  : translateX( 100% )
+	
+	&.active
+		transform : translateX( 0 )
+		
+	ul
+		height         : 100%
+		text-align     : center
+		display        : flex
+		align-items    : center
+		justify-content: center
+		flex-flow      : column wrap
+		
+		li
+			display  : block
+			margin   : 10px 0
+			font-size: 20px
+	
+.nav_cta
+	absolute   : top right
+	width      : 22px
+	padding    : 16px
+	cursor     : pointer
+	z-index    : 1000
+	
+	&.active
+		
+		.line
+			
+			&:nth-child(1)
+				transform: rotate(45deg) translate(5px, 5px)
+				
+			&:nth-child(2)
+				transform: scale(0)
+				opacity  : 0
+				
+			&:nth-child(3)
+				transform: rotate(-45deg) translate(5px, -5px)
+	
+	.line
+		width           : 100%
+		height          : 2px
+		background-color: white
+		margin          : 5px 0
+		transition      : all 0.5s cubic-bezier( 0.23, 1, 0.32, 1 )
+		
+		&:first-child
+			margin-top: 0
+			
+		&:last-child
+			margin-bottom: 0

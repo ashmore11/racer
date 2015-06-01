@@ -3,5 +3,5 @@ ServiceConfiguration.configurations.remove service: 'facebook'
 ServiceConfiguration.configurations.insert
 	service    : 'facebook'
 	loginStyle : 'popup'
-	appId      : '908312932515352'
-	secret     : '91ebf7ceb1bcd8b80c39e1d0c2dbeac7'
+	appId      : '1603566783252297'
+	secret     : '745ab6b368130965d6c7dd2aa4530a49'

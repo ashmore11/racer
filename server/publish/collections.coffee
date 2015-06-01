@@ -1,1 +1,1 @@
-Meteor.publish 'players', -> PlayerList.find()
+# Meteor.publish 'players', -> PlayerList.find()

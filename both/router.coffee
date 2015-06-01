@@ -8,7 +8,7 @@ class @AppRouter
 
 		waitOn: ->
 
-			Meteor.subscribe 'players'
+			Meteor.subscribe 'users'
 
 	Router.map ->
 
@@ -22,12 +22,11 @@ class @AppRouter
 				@render 'home'
 
 
-		@route 'players',
-			path   : '/players'
-			data   : -> players: PlayerList.find().fetch()
+		@route 'settings',
+			path   : '/settings'
 			action : ->
 				return unless @ready()
 				
-				view = new PlayerListView
+				view = new SettingsView
 
-				@render 'players'
+				@render 'settings'
