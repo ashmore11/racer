@@ -2,19 +2,29 @@ class @HomeView
 
 	constructor: ->
 
-		location = do Geolocation.currentLocation
+		do @login_with_facebook
 
-		Template.home.events
+		geoloc = Geolocation.currentLocation()
+
+		if Meteor.userId() and geoloc
+
+			coords =
+				accuracy  : geoloc.coords.accuracy
+				heading   : geoloc.coords.heading
+				latitude  : geoloc.coords.latitude
+				longitude : geoloc.coords.longitude
+				speed     : geoloc.coords.speed
+
+			fb_id   = Meteor.users.findOne( Meteor.userId() ).services.facebook.id
+			img_src = "http://graph.facebook.com/" + fb_id + "/picture/?type=large"
+
+			Meteor.users.update Meteor.userId(), $set: 'profile.coords' : coords, 'profile.image' : img_src
+
+
+	login_with_facebook: ->
+
+		Template.login.events
 			
-			'click #home': ->
+			'click .fa-facebook': ->
 
-				stats =
-					time     : location?.timestamp
-					accuracy : location?.coords.accuracy
-					lat      : location?.coords.latitude
-					lon      : location?.coords.longitude
-					speed    : location?.coords.speed
-
-				PlayerList.update @_id, $set: 'stats.lat': 5
-
-				console.log PlayerList.findOne( id: @_id ).stats
+				do Meteor.loginWithFacebook

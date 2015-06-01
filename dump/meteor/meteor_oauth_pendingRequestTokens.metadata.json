@@ -1,1 +1,0 @@
-{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "meteor.meteor_oauth_pendingRequestTokens", "name" : "_id_" }, { "v" : 1, "key" : { "key" : 1 }, "unique" : true, "ns" : "meteor.meteor_oauth_pendingRequestTokens", "name" : "key_1" }, { "v" : 1, "key" : { "createdAt" : 1 }, "ns" : "meteor.meteor_oauth_pendingRequestTokens", "name" : "createdAt_1" } ] }
