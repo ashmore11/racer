@@ -25,3 +25,4 @@ accounts-password
 session-amplify
 mrt:session-amplify
 cfs:data-man
+mdg:geolocation
