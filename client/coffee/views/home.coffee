@@ -3,7 +3,45 @@ class @HomeView
 	constructor: ->
 
 		do @login_with_facebook
-		do @update_score
+
+		Template.home.rendered = ->
+
+			@index = 0
+
+			Tracker.autorun () =>
+
+				@index++
+
+				geoloc = Geolocation.currentLocation()
+
+				if geoloc
+
+					coords =
+						accuracy  : geoloc.coords.accuracy
+						heading   : geoloc.coords.heading or 0
+						latitude  : geoloc.coords.latitude
+						longitude : geoloc.coords.longitude
+						speed     : geoloc.coords.speed or 0
+
+					$('#stats').find('.accuracy').html( 'acc: ' + coords.accuracy )
+					$('#stats').find('.lat').html( 'lat: ' + coords.latitude )
+					$('#stats').find('.lon').html( 'lon: ' + coords.longitude )
+					$('#stats').find('.speed').html( 'speed: ' + ( Math.floor( coords.speed * 3.6 ) ) + ' KPH' )
+					$('#stats').find('.index').html( 'index: ' + @index )
+
+					if coords.heading > 315 and coords.heading < 45
+						compass = 'NORTH'
+
+					if coords.heading > 45 and coords.heading < 135
+						compass = 'EAST'
+
+					if coords.heading > 135 and coords.heading < 225
+						compass = 'SOUTH'
+
+					if coords.heading > 225 and coords.heading < 315
+						compass = 'WEST'
+
+					$('#stats').find('.heading').html( 'heading: ' + compass )
 
 
 	login_with_facebook: ->
@@ -13,24 +51,3 @@ class @HomeView
 			'click .fa-facebook': ->
 
 				do Meteor.loginWithFacebook
-
-
-	update_score: ->
-
-		Template.home.events
-
-			'click .update-score': ->
-
-				Meteor.users.update Meteor.userId(), $inc: 
-					'profile.score' : 1
-
-			'change select': ( event ) ->
-
-				level = $( event.target ).val()
-
-				Meteor.users.update Meteor.userId(), $set: 
-					'profile.skill_level' : level
-
-			'click .logout': ->
-
-				do Meteor.logout
