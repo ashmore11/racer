@@ -30,13 +30,13 @@ class @Client
 
 		Template.header.events
 
-			'touchstart .nav_cta, click .nav_cta' : ( event ) =>
+			'touchstart .nav_cta, click .nav_cta': =>
 				
 				do event.preventDefault
 
 				if @nav_active() then @set_false() else @set_true()
 
-			'touchstart a, click a' : ( event ) =>
+			'touchstart a, click a' : =>
 				
 				do event.preventDefault
 

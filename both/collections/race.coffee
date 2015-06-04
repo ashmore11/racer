@@ -1,0 +1,1 @@
+@Race = new Meteor.Collection 'race'

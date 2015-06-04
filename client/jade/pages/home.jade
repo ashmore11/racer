@@ -4,21 +4,32 @@ template( name="home" )
 
 		if currentUser
 
-			.user
-				
-				.name
-					span {{ currentUser.profile.name }}
-				
-				.profile-picture
-					img( src="{{ currentUser.profile.image }}" )
+			+user
 
+			.users ACTIVE USERS: {{ active_users }}
 
-			.race
-				span FIND RACE
+			+find_race
 		
 		else
 
 			+login
+
+
+template( name="user" )
+
+	.user
+				
+		.name
+			span {{ currentUser.profile.name }}
+		
+		.profile-picture
+			img( src="{{ currentUser.profile.image }}" )
+
+
+template( name="find_race" )
+
+	a.race( href="{{ pathFor 'races' }}" ) FIND A RACE
+
 
 template( name="login" )
 
