@@ -1,5 +1,6 @@
 class @HomeView
 
+	location: null
 	index: 0
 
 	constructor: ->
@@ -13,64 +14,59 @@ class @HomeView
 
 		@location = new ReactiveVar null
 			
-		# promise = new Promise ( resolve, reject ) ->
+		promise = new Promise ( resolve, reject ) ->
 
-		# 	navigator.geolocation.watchPosition resolve, reject, options
+			navigator.geolocation.getCurrentPosition resolve, reject, @options
 
-		# promise.then ( position ) => 
+		promise.then ( position ) =>
 
-		# 	@location.set position.coords
+			@location.set position.coords
 
-		# 	@init()
+			do @start_watching_position
+			do @init
 
-		@init()
 
-	get_pos: ->
-
-		do @startWatchingPosition
+	get_position: ->
 
 		return @location.get()
 
-	startWatchingPosition: ->
+	
+	start_watching_position: ->
 
-		unless @watchingPosition && navigator.geolocation
-
-			navigator.geolocation.watchPosition @onPosition, @onError, @options
-			
-			@watchingPosition = true
+		navigator.geolocation.watchPosition @on_position, @on_error, @options
 
 
-	onPosition: ( position ) =>
+	on_position: ( position ) =>
+
+		console.log position
 
 		@location.set position
 
 
-	onError: ( error ) =>
+	on_error: ( error ) =>
 
 		console.log error
 
 
-	init: ( position ) ->
+	init: ->
 
-		# do @init_map
+		do @init_map
 
 		Tracker.autorun () =>
 
-			if @get_pos()
+			@index++
 
-				@index++
+			do @update_map
 
-				# do @update_map
+			coords = @get_position()
 
-				coords = @location.get().coords
-
-				$('#stats').find('.accuracy').html( 'ACCURACY: ' + Math.floor( coords.accuracy ) + ' Meters' )
-				$('#stats').find('.heading').html( 'HEADING: ' + ( coords.heading or 0 ) )
-				$('#stats').find('.lat').html( 'LAT: ' + coords.latitude )
-				$('#stats').find('.lon').html( 'LON: ' + coords.longitude )
-				$('#stats').find('.speed').html( 'SPEED: ' + ( Math.floor( ( coords.speed or 0 ) * 3.6 ) ) + ' kph' )
-				$('#stats').find('.distance').html( 'DISTANCE: ' + @get_distance( @lat_1, @lon_1, @lat_2, @lon_2 ) + ' km' )
-				$('#stats').find('.index').html( 'INDEX: ' + @index )
+			$('#stats').find('.accuracy').html( 'ACCURACY: ' + Math.floor( coords.accuracy ) + ' Meters' )
+			$('#stats').find('.heading').html( 'HEADING: ' + ( coords.heading or 0 ) )
+			$('#stats').find('.lat').html( 'LAT: ' + coords.latitude )
+			$('#stats').find('.lon').html( 'LON: ' + coords.longitude )
+			$('#stats').find('.speed').html( 'SPEED: ' + ( Math.floor( ( coords.speed or 0 ) * 3.6 ) ) + ' kph' )
+			$('#stats').find('.distance').html( 'DISTANCE: ' + @get_distance( @lat_1, @lon_1, @lat_2, @lon_2 ) + ' km' )
+			$('#stats').find('.index').html( 'INDEX: ' + @index )
 
 
 	init_map: ->
