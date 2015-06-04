@@ -2,62 +2,48 @@ class @Client
 
 	constructor: ->
 
-		Tracker.autorun ->
+		Tracker.autorun =>
+
 			Meteor.subscribe 'user'
 			Meteor.subscribe 'users'
 
+			do @update_user
+
 		do @set_false
 		do @bind_header
-		do @update_user
-
 
 	update_user: ->
 
-		geoloc = Geolocation.currentLocation()
+		if Meteor.userId()
 
-		if Meteor.userId() and geoloc
-
-			coords =
-				accuracy  : geoloc.coords.accuracy
-				heading   : geoloc.coords.heading
-				latitude  : geoloc.coords.latitude
-				longitude : geoloc.coords.longitude
-				speed     : geoloc.coords.speed
-
-			fb_id   = Meteor.users.findOne( Meteor.userId() ).services.facebook.id
+			user    = Meteor.users.findOne Meteor.userId()
+			fb_id   = user.services?.facebook.id
 			img_src = "http://graph.facebook.com/" + fb_id + "/picture/?type=large"
 
-			Meteor.users.update Meteor.userId(), $set:
-				'profile.coords' : coords
-				'profile.image'  : img_src
-
+			Meteor.users.update Meteor.userId(), $set: 'profile.image': img_src
 
 	bind_header: ->
 
 		Template.header.helpers
 
-			active: => if Session.equals 'nav_active', true then 'active' else ''
+			active: => if @nav_active() then 'active' else ''
 
 		Template.header.events
 
-			'touchstart .nav_cta, click .nav_cta': =>
-				event.preventDefault()
+			'touchstart .nav_cta, click .nav_cta' : ( event ) =>
+				
+				do event.preventDefault
 
-				if Session.equals 'nav_active', true then @set_false() else @set_true()
+				if @nav_active() then @set_false() else @set_true()
 
-			'touchstart a, click a': =>
-				event.preventDefault()
+			'touchstart a, click a' : ( event ) =>
+				
+				do event.preventDefault
 
 				Router.go event.target.attributes[0].value
 
-				@set_false()
+				do @set_false
 
-
-	set_true: ->
-
-		Session.set 'nav_active', true
-	
-	
-	set_false: -> 
-
-		Session.set 'nav_active', false
+	nav_active: -> Session.equals 'nav_active', true
+	set_true: ->   Session.set 'nav_active',    true
+	set_false: ->  Session.set 'nav_active',    false

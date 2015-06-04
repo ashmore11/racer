@@ -2,25 +2,22 @@ template( name="settings" )
 
 	#settings.page
 
-		.stats 
-			span accuracy: {{ currentUser.profile.coords.accuracy }}
-			span lat: {{ currentUser.profile.coords.latitude }}
-			span lon: {{ currentUser.profile.coords.longitude }}
+		//- .skill-level
+		//- 	select
+		//- 		option(value="easy") easy
+		//- 		option(value="medium") medium
+		//- 		option(value="hard") hard
+		//- 		option(value="insane") insane
 
-			if currentUser.profile.coords.speed
-				span speed: {{ currentUser.profile.coords.speed }}
+		//- 	span level: {{ currentUser.profile.skill_level }}
 
-		.score
-			button.update-score increase score
-			span score: {{ currentUser.profile.score }}
+		//- button.logout logout
 
-		.skill-level
-			select
-				option(value="easy") easy
-				option(value="medium") medium
-				option(value="hard") hard
-				option(value="insane") insane
+		#map_canvas
 
-			span level: {{ currentUser.profile.skill_level }}
-
-		button.logout logout
+		#stats
+			.accuracy
+			.speed
+			.distance
+			.last_update
+			.updates

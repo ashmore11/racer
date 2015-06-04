@@ -2,10 +2,11 @@ template(name="layout")
 
 	+header
 
-	main#main
-		+yield
+	.background
 
-	+footer
+	main#main
+
+		+yield
 
 
 template( name="header" )
@@ -22,8 +23,3 @@ template( name="header" )
 			ul
 				li.link: a( href="{{ pathFor 'home' }}" ) HOME
 				li.link: a( href="{{ pathFor 'settings' }}" ) SETTINGS
-
-
-template( name="footer" )
-
-	footer#footer

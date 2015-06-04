@@ -7,7 +7,8 @@ class @AppRouter
 		notFoundTemplate : '404'
 
 		waitOn: ->
-
+			
+			Meteor.subscribe 'user'
 			Meteor.subscribe 'users'
 
 	Router.map ->

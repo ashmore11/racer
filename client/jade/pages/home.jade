@@ -2,8 +2,6 @@ template( name="home" )
 
 	#home.page
 
-		.background
-
 		if currentUser
 
 			.user
@@ -20,20 +18,10 @@ template( name="home" )
 		
 		else
 
-			//- +login
-
-			#map_canvas
-
-			#stats
-				.accuracy
-				.heading
-				.lat
-				.lon
-				.speed
-				.distance
-				.index
+			+login
 
 template( name="login" )
 
 	.login
+
 		span LOGIN WITH FACEBOOK
