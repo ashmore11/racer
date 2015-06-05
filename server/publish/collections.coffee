@@ -1,1 +1,1 @@
-Meteor.publish 'race', -> Race.find()
+Meteor.publish 'races', -> RaceList.find()

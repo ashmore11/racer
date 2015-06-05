@@ -10,7 +10,7 @@ class @AppRouter
 			
 			Meteor.subscribe 'user'
 			Meteor.subscribe 'users'
-			Meteor.subscribe 'race'
+			Meteor.subscribe 'races'
 
 	Router.map ->
 
@@ -45,10 +45,10 @@ class @AppRouter
 
 
 		@route 'race',
-			path   : '/races/:_id'
+			path   : '/races/:id'
 			action : ->
 				return unless @ready()
 				
-				view = new RaceView @params._id
+				view = new RaceView @params.id
 
 				@render 'race'	

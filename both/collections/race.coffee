@@ -1,1 +1,4 @@
-@Race = new Meteor.Collection 'race'
+@RaceList = new Meteor.Collection 'races'
+
+@RaceList.insert
+	races: []
