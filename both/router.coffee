@@ -46,9 +46,10 @@ class @AppRouter
 
 		@route 'race',
 			path   : '/races/:id'
+			data   : -> RaceList.findOne _id: @params.id
 			action : ->
 				return unless @ready()
-				
+
 				view = new RaceView @params.id
 
 				@render 'race'	

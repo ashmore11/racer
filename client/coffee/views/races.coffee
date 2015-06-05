@@ -4,14 +4,15 @@ class @RacesView
 
 		Template.races.helpers
 
-			race_id: ->
+			races: ->
 
-				return do Random.id
+				return RaceList.find().fetch()
 
 		Template.races.events
 
-			'click .race': ->
+			'touchstart .race, click .race': ( event ) ->
 
-				race_id = event.target.id
+				do event.preventDefault
+				do event.stopPropagation
 
-				Router.go '/races/' + race_id
+				Router.go '/races/' + @_id

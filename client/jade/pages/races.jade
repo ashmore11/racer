@@ -3,9 +3,7 @@ template( name="races" )
 	#races.page
 
 		ul.races
-			li.race( id="{{ race_id }}" ) 1:30
-			li.race( id="{{ race_id }}" ) 2:00
-			li.race( id="{{ race_id }}" ) 2:30
-			li.race( id="{{ race_id }}" ) 3:00
-			li.race( id="{{ race_id }}" ) 3:30
-			li.race( id="{{ race_id }}" ) 4:00
+
+			each races
+
+				li.race( id="{{ _id }}" index="{{ index }}" ) {{ _id }}

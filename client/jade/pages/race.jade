@@ -1,3 +1,26 @@
 template( name="race" )
 
 	#race.page
+
+		h1 {{ _id }}
+
+
+		ul.users
+			each users
+				li.user
+					.profile
+						img( src="{{ profile.image }}" )
+						span.name {{ profile.name }}
+
+					.distance {{ profile.distance }}
+
+
+		if in_race
+
+			.map: #map_canvas
+
+			.join-race-btn LEAVE RACE
+
+		else
+
+			.join-race-btn JOIN RACE

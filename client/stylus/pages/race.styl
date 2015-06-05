@@ -1,4 +1,49 @@
 @import 'nib'
 
 #race
-	//
+	text-align: center
+	
+	h1
+		display         : block
+		background-color: #111
+		padding         : 15px
+		text-transform  : uppercase
+		color           : white
+		margin-bottom   : 10px
+		font-size       : 20px
+		
+	ul.users
+		margin-top: 20px
+		
+		li.user
+			img
+				width: 40px
+				border-radius: 999px
+				vertical-align: middle
+				margin-right: 5px
+			
+			span
+				text-transform: uppercase
+				
+			.profile
+			.distance
+				display: inline-block
+				margin : 0 40px
+	
+	.map
+		absolute: bottom 110px left 1%
+		width   : 98%
+		height  : 140px
+
+	#map_canvas
+		width : 100%
+		height: 100%
+	
+	.join-race-btn
+		absolute  : bottom left
+		width     : 98%
+		padding   : 40px 0
+		color     : white
+		font-size : 20px
+		background: linear-gradient( top, #111, #222, #111 )
+		margin    : 1%

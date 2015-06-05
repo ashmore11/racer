@@ -6,6 +6,7 @@ class @Client
 
 			Meteor.subscribe 'user'
 			Meteor.subscribe 'users'
+			Meteor.subscribe 'races'
 
 			do @update_user
 
@@ -33,12 +34,14 @@ class @Client
 			'touchstart .nav_cta, click .nav_cta': =>
 				
 				do event.preventDefault
+				do event.stopPropagation
 
 				if @nav_active() then @set_false() else @set_true()
 
 			'touchstart a, click a' : =>
 				
 				do event.preventDefault
+				do event.stopPropagation
 
 				Router.go event.target.attributes[0].value
 
