@@ -1,18 +1,13 @@
 class @RaceView
 
+	geoloc: null
 	coords: null
-	updates: 0
 	map: null
+	path: null
 
 	constructor: ( @id ) ->
 
-		if RaceList.find( users: $elemMatch: _id: Meteor.userId() ).fetch().length > 0
-			
-			Session.set 'in_race', true
-		
-		else
-		
-			Session.set 'in_race', false
+		do @set_user_in_race
 
 		Template.race.helpers
 
@@ -44,11 +39,23 @@ class @RaceView
 				do @init if @geoloc
 
 
-	user_in_race: -> Session.equals 'in_race', true
+	set_user_in_race: ->
+
+		if RaceList.find( users: $elemMatch: _id: Meteor.userId() ).fetch().length > 0
+			
+			Session.set 'in_race', true
+		
+		else
+		
+			Session.set 'in_race', false
+
+
+	user_in_race: ->
+
+		Session.equals 'in_race', true
+
 
 	init: ->
-
-		@updates++
 
 		@coords =
 			accuracy  : Math.floor @geoloc.coords.accuracy
@@ -69,9 +76,7 @@ class @RaceView
 
 	update_distance: ->
 
-		Meteor.users.update Meteor.userId(),
-			$set: 
-				'profile.distance': ( @distance or '0.00' ) + ' km'
+		Meteor.call 'update_distance', @id, Meteor.userId(), @distance
 
 
 	init_map: ->
