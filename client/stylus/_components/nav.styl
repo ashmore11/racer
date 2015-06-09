@@ -7,10 +7,10 @@
 	z-index    : 999
 	background : rgba(black, 0.9)
 	transition : transform 1s cubic-bezier( 0.23, 1, 0.32, 1 )
-	transform  : translateX( 100% )
+	transform  : translateY( -100% )
 	
 	&.active
-		transform : translateX( 0 )
+		transform : translateY( 0 )
 		
 	ul
 		height         : 100%
@@ -21,9 +21,9 @@
 		flex-flow      : column wrap
 		
 		li
-			display  : block
-			margin   : 10px 0
-			font-size: 20px
+			display   : block
+			margin    : 10px 0
+			font-size : 20px
 	
 .nav_cta
 	absolute   : top right

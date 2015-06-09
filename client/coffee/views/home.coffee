@@ -15,6 +15,6 @@ class @HomeView
 
 		Template.login.events
 			
-			'touchstart .login': ->
+			'click .login': ->
 
 				do Meteor.loginWithFacebook

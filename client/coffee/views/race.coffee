@@ -17,7 +17,7 @@ class @RaceView
 
 		Template.race.events
 
-			'touchstart .join-race-btn': ( event ) =>
+			'click .join-race-btn': ( event ) =>
 
 				do event.preventDefault
 				do event.stopPropagation

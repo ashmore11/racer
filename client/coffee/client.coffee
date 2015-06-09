@@ -31,14 +31,14 @@ class @Client
 
 		Template.header.events
 
-			'touchstart .nav_cta, click .nav_cta': =>
+			'click .nav_cta': =>
 				
 				do event.preventDefault
 				do event.stopPropagation
 
 				if @nav_active() then @set_false() else @set_true()
 
-			'touchstart a, click a' : =>
+			'click a' : =>
 				
 				do event.preventDefault
 				do event.stopPropagation
