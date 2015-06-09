@@ -17,7 +17,7 @@ class @RaceView
 
 		Template.race.events
 
-			'touchstart .join-race-btn, click .join-race-btn': ( event ) =>
+			'touchstart .join-race-btn': ( event ) =>
 
 				do event.preventDefault
 				do event.stopPropagation
@@ -52,7 +52,7 @@ class @RaceView
 
 	user_in_race: ->
 
-		Session.equals 'in_race', true
+		return Session.get 'in_race'
 
 
 	init: ->

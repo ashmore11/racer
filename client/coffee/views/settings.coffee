@@ -8,15 +8,7 @@ class @SettingsView
 
 		Template.settings.events
 
-			'change select': ( event ) ->
-
-				skill_level = $( event.target ).val()
-
-				Meteor.users.update Meteor.userId(),
-					$set: 
-						'profile.skill_level' : skill_level
-
-			'click .logout': ->
+			'touchstart .logout': ->
 
 				do Meteor.logout
 

@@ -10,7 +10,7 @@ class @RacesView
 
 		Template.races.events
 
-			'touchstart .race, click .race': ( event ) ->
+			'touchstart .race': ( event ) ->
 
 				do event.preventDefault
 				do event.stopPropagation
