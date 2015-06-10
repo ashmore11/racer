@@ -1,6 +1,8 @@
 template(name="layout")
 
-	+header
+	if currentUser
+
+		+header
 
 	.background
 
@@ -11,16 +13,14 @@ template(name="layout")
 
 template( name="header" )
 
-	if currentUser
+	.nav_cta( class="#{active}" )
+		.line
+		.line
+		.line
 
-		.nav_cta( class="#{active}" )
-			.line
-			.line
-			.line
+	header#nav( class="#{active}" )
 
-		header#nav( class="#{active}" )
-
-			ul
-				li.link: a( href="{{ pathFor 'home' }}" ) HOME
-				li.link: a( href="{{ pathFor 'settings' }}" ) SETTINGS
-				li.link: a( href="{{ pathFor 'races' }}" ) FIND A RACE
+		ul
+			li.link: a( href="{{ pathFor 'home' }}" ) HOME
+			li.link: a( href="{{ pathFor 'settings' }}" ) SETTINGS
+			li.link: a( href="{{ pathFor 'races' }}" ) FIND A RACE

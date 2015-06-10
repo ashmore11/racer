@@ -12,6 +12,23 @@ class @AppRouter
 			Meteor.subscribe 'users'
 			Meteor.subscribe 'races'
 
+		onBeforeAction: ->
+
+			if Meteor.userId()
+
+				do @next
+
+			else
+
+				@redirect '/'
+
+				do @next
+
+		onStop: ->
+
+			@view = null
+
+
 	Router.map ->
 
 		@route 'home',
@@ -19,7 +36,7 @@ class @AppRouter
 			action : ->
 				return unless @ready()
 
-				view = new HomeView
+				@view = new HomeView
 				
 				@render 'home'
 
@@ -29,7 +46,7 @@ class @AppRouter
 			action : ->
 				return unless @ready()
 				
-				view = new SettingsView
+				@view = new SettingsView
 
 				@render 'settings'
 
@@ -39,7 +56,7 @@ class @AppRouter
 			action : ->
 				return unless @ready()
 				
-				view = new RacesView
+				@view = new RacesView
 
 				@render 'races'
 
@@ -50,6 +67,6 @@ class @AppRouter
 			action : ->
 				return unless @ready()
 
-				view = new RaceView @params.id
+				@view = new RaceView @params.id
 
-				@render 'race'	
+				@render 'race'

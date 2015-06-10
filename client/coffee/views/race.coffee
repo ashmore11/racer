@@ -2,8 +2,8 @@ class @RaceView
 
 	geoloc: null
 	coords: null
-	map: null
-	path: null
+	map   : null
+	path  : null
 
 	constructor: ( @id ) ->
 
@@ -19,16 +19,23 @@ class @RaceView
 
 			'click .join-race-btn': ( event ) =>
 
-				do event.preventDefault
-				do event.stopPropagation
+				event.stopPropagation()
 
 				if @user_in_race()
 
 					RaceList.update @id, $pull: users: Meteor.user()
 
+					Session.set @id, false
+
+					console.log '[ USER NOT IN RACE ] ~> ', @id
+
 				else
 
 					RaceList.update @id, $push: users: Meteor.user()
+
+					Session.set @id, true
+
+					# console.log '[ USER IN RACE ] ~> ( join-race-btn ) ~> ', @id
 
 		Template.race.rendered = =>
 
@@ -36,23 +43,27 @@ class @RaceView
 
 				@geoloc = do Geolocation.currentLocation
 
-				do @init if @geoloc
+				do @init if @geoloc and @user_in_race()
 
 
 	set_user_in_race: ->
 
-		if RaceList.find( users: $elemMatch: _id: Meteor.userId() ).fetch().length > 0
+		if RaceList.find( _id: @id, users: $elemMatch: _id: Meteor.userId() ).fetch().length > 0
+
+			# console.log '[ USER IN RACE ]'
 			
-			Session.set 'in_race', true
+			Session.set @id, true
 		
 		else
+
+			# console.log '[ USER NOT IN RACE ]'
 		
-			Session.set 'in_race', false
+			Session.set @id, false
 
 
 	user_in_race: ->
 
-		return Session.get 'in_race'
+		return Session.get @id
 
 
 	init: ->
@@ -64,14 +75,14 @@ class @RaceView
 			speed     : Math.floor( @geoloc.coords.speed * 3.6 ) or 0
 			date      : new Date @geoloc.timestamp
 
-		if @map
+		# if @map
 		
-			do @update_map 
-			do @update_distance
+		# 	do @update_map 
+		# 	do @update_distance
 		
-		else
+		# else
 
-			google.maps.event.addDomListener window, 'load', do @init_map
+		# 	google.maps.event.addDomListener window, 'load', do @init_map
 
 
 	update_distance: ->
