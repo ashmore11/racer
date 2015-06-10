@@ -1,7 +1,6 @@
 @import 'nib'
 
 #race
-	text-align: center
 	
 	h1
 		display         : block
@@ -9,15 +8,36 @@
 		padding         : 15px
 		text-transform  : uppercase
 		color           : white
-		margin-bottom   : 10px
 		font-size       : 20px
+		text-align      : center
+		
+	.stats
+		position: relative
+		border-bottom: 2px solid #111
+		font-size: 12px
+		letter-spacing: 1px
+		text-align: center
+		
+		.speed
+		.accuracy
+			display: inline-block
+			width: 49%
+			padding: 10px 0
+			
+		.splitter
+			absolute: top left 50%
+			width: 2px
+			height: 100%
+			background-color: #111
 		
 	ul.users
 		margin-top: 20px
 		
 		li.user
+			margin-bottom: 10px
+			
 			img
-				width: 40px
+				width: 30px
 				border-radius: 999px
 				vertical-align: middle
 				margin-right: 5px
@@ -28,7 +48,9 @@
 			.profile
 			.distance
 				display: inline-block
-				margin : 0 40px
+				
+			.profile
+				margin-left: 20px
 	
 	.map
 		absolute: bottom 110px left 1%
@@ -47,3 +69,4 @@
 		font-size : 20px
 		background: linear-gradient( top, #111, #222, #111 )
 		margin    : 1%
+		text-align: center

@@ -5,37 +5,47 @@ class @RaceView
 	map   : null
 	path  : null
 
-	constructor: ( @id ) ->
+	constructor: ->
 
-		do @set_user_in_race
+		do @template_helpers
+		do @template_events
+
+
+	template_helpers: ->
+
+		Template.join_race.helpers
+
+			user_in_race: ->
+
+				return RaceList.find( _id: @_id, users: $elemMatch: _id: Meteor.userId() ).fetch().length > 0
 
 		Template.race.helpers
 
-			in_race: =>
+			accuracy: =>
 
-				return @user_in_race()
+				return Geolocation.currentLocation()?.coords.accuracy or 0
 
-		Template.race.events
+			speed: =>
 
-			'click .join-race-btn': ( event ) =>
+				return Geolocation.currentLocation()?.coords.speed or 0
 
-				event.stopPropagation()
 
-				if @user_in_race()
+	template_events: ->
 
-					RaceList.update @id, $pull: users: Meteor.user()
+		Template.join_race.events
 
-					Session.set @id, false
+			'click .join-race-btn': ( event ) ->
 
-					console.log '[ USER NOT IN RACE ] ~> ', @id
+				do event.stopPropagation
+
+				if RaceList.find( _id: @_id, users: $elemMatch: _id: Meteor.userId() ).fetch().length > 0
+
+					RaceList.update @_id, $pull: users: Meteor.user()
 
 				else
 
-					RaceList.update @id, $push: users: Meteor.user()
+					RaceList.update @_id, $push: users: Meteor.user()
 
-					Session.set @id, true
-
-					# console.log '[ USER IN RACE ] ~> ( join-race-btn ) ~> ', @id
 
 		Template.race.rendered = =>
 
@@ -43,27 +53,7 @@ class @RaceView
 
 				@geoloc = do Geolocation.currentLocation
 
-				do @init if @geoloc and @user_in_race()
-
-
-	set_user_in_race: ->
-
-		if RaceList.find( _id: @id, users: $elemMatch: _id: Meteor.userId() ).fetch().length > 0
-
-			# console.log '[ USER IN RACE ]'
-			
-			Session.set @id, true
-		
-		else
-
-			# console.log '[ USER NOT IN RACE ]'
-		
-			Session.set @id, false
-
-
-	user_in_race: ->
-
-		return Session.get @id
+				do @init if @geoloc
 
 
 	init: ->
@@ -73,21 +63,15 @@ class @RaceView
 			latitude  : @geoloc.coords.latitude
 			longitude : @geoloc.coords.longitude
 			speed     : Math.floor( @geoloc.coords.speed * 3.6 ) or 0
-			date      : new Date @geoloc.timestamp
 
-		# if @map
+		if @map
 		
-		# 	do @update_map 
-		# 	do @update_distance
+			do @update_map 
+			
 		
-		# else
+		else
 
-		# 	google.maps.event.addDomListener window, 'load', do @init_map
-
-
-	update_distance: ->
-
-		Meteor.call 'update_distance', @id, Meteor.userId(), @distance
+			google.maps.event.addDomListener window, 'load', do @init_map
 
 
 	init_map: ->
@@ -97,7 +81,7 @@ class @RaceView
 		map_options =
 			mapTypeId        : google.maps.MapTypeId.MAP
 			disableDefaultUI : true
-			zoomControl      : true
+			zoomControl      : false
 			zoom             : 16
 
 		@map = new google.maps.Map map_canvas, map_options
@@ -137,25 +121,9 @@ class @RaceView
 		distance  = google.maps.geometry.spherical.computeLength( path )
 		@distance = ( distance * 0.001 ).toFixed 2
 
+		do @update_distance
 
-	get_date_and_time: ->
 
-		months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
-		date   = @coords.date.getDay() + ' ' + months[@coords.date.getMonth()] + ' ' + @coords.date.getFullYear()
-		
-		if @coords.date.getMinutes() < 10
-			minutes = '0' + @coords.date.getMinutes()
-		else
-			minutes = @coords.date.getMinutes()
+	update_distance: ->
 
-		if @coords.date.getSeconds() < 10
-			seconds = '0' + @coords.date.getSeconds()
-		else
-			seconds = @coords.date.getSeconds()
-
-		time   = @coords.date.getHours() + ':' + minutes + ':' + seconds
-
-		return {
-			date: date
-			time: time
-		}
+		Meteor.call 'update_distance', @id, Meteor.userId(), @distance

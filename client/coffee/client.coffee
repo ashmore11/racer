@@ -12,6 +12,16 @@ class @Client
 
 		do @set_false
 		do @bind_header
+		do @generate_views
+
+
+	generate_views: ->
+
+		window.home_view     = new HomeView
+		window.settings_view = new SettingsView
+		window.races_view    = new RacesView
+		window.race_view     = new RaceView
+		
 
 	update_user: ->
 

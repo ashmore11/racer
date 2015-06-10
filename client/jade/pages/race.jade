@@ -4,23 +4,39 @@ template( name="race" )
 
 		h1 {{ _id }}
 
+		.stats
+			.accuracy ACCURACY: {{ accuracy }} METERS
+			.splitter
+			.speed SPEED: {{ speed }} KPH
 
-		ul.users
-			each users
-				li.user
-					.profile
-						img( src="{{ profile.image }}" )
-						span.name {{ profile.name }}
+		+race_users
 
-					.distance {{ profile.distance }}
+		+join_race
 
 
-		if in_race
+template( name="race_users" )
 
-			.map: #map_canvas
+	ul.users
 
-			.join-race-btn LEAVE RACE
+		each users
 
-		else
+			li.user
 
-			.join-race-btn JOIN RACE
+				.profile
+					img( src="{{ profile.image }}" )
+					span.name {{ services.facebook.first_name }}
+
+				.distance {{ profile.distance }}
+
+
+template( name="join_race" )
+
+	if user_in_race
+
+		.map: #map_canvas
+
+		.join-race-btn LEAVE RACE
+
+	else
+
+		.join-race-btn JOIN RACE

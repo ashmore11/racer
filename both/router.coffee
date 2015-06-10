@@ -24,10 +24,6 @@ class @AppRouter
 
 				do @next
 
-		onStop: ->
-
-			@view = null
-
 
 	Router.map ->
 
@@ -35,8 +31,6 @@ class @AppRouter
 			path   : '/'
 			action : ->
 				return unless @ready()
-
-				@view = new HomeView
 				
 				@render 'home'
 
@@ -45,8 +39,6 @@ class @AppRouter
 			path   : '/settings'
 			action : ->
 				return unless @ready()
-				
-				@view = new SettingsView
 
 				@render 'settings'
 
@@ -55,8 +47,6 @@ class @AppRouter
 			path   : '/races'
 			action : ->
 				return unless @ready()
-				
-				@view = new RacesView
 
 				@render 'races'
 
@@ -66,7 +56,5 @@ class @AppRouter
 			data   : -> RaceList.findOne _id: @params.id
 			action : ->
 				return unless @ready()
-
-				@view = new RaceView @params.id
 
 				@render 'race'
