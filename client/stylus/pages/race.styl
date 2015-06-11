@@ -30,10 +30,16 @@
 			background-color: #111
 		
 	ul.users
-		margin-top: 5px
 		
 		li.user
-			padding: 5px 0
+			padding      : 10px 0
+			border-bottom: 1px solid #111
+			
+			&:nth-child(odd)
+				background: linear-gradient( top, rgba(0,0,0,0.2), rgba(0,0,0,0.1), rgba(0,0,0,0.2) )
+				
+			&:nth-child(even)
+				background: linear-gradient( top, rgba(0,0,0,0.1), rgba(0,0,0,0.2), rgba(0,0,0,0.1) )
 			
 			img
 				width         : 30px

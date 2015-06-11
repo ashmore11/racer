@@ -14,7 +14,7 @@ class @RaceView
 
 	template_helpers: ->
 
-		Template.join_race.helpers
+		Template.race.helpers
 
 			user_in_race: ->
 
@@ -33,19 +33,11 @@ class @RaceView
 
 	template_events: ->
 
-		Template.join_race.events
+		Template.race.events
 
 			'click .join-race-btn': ( event ) ->
 
-				do event.stopPropagation
-
-				if RaceList.find( _id: @_id, users: $elemMatch: _id: Meteor.userId() ).fetch().length > 0
-
-					RaceList.update @_id, $pull: users: Meteor.user()
-
-				else
-
-					RaceList.update @_id, $push: users: Meteor.user()
+				Meteor.call 'update_users_array', @_id, Meteor.user()
 
 
 	template_rendered: ->
@@ -78,8 +70,7 @@ class @RaceView
 
 	init_map: ->
 
-		map_canvas = document.getElementById 'map_canvas'
-
+		map_canvas  = document.getElementById 'map_canvas'
 		map_options =
 			mapTypeId        : google.maps.MapTypeId.MAP
 			disableDefaultUI : true

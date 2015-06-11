@@ -28,7 +28,7 @@ class @Client
 		if Meteor.userId()
 
 			user    = Meteor.users.findOne Meteor.userId()
-			fb_id   = user.services?.facebook.id
+			fb_id   = user?.services?.facebook.id
 			img_src = "http://graph.facebook.com/" + fb_id + "/picture/?type=large"
 
 			Meteor.users.update Meteor.userId(), $set: 'profile.image': img_src
