@@ -1,12 +1,14 @@
 class @RaceView
 
-	geoloc: null
-	coords: null
-	map   : null
-	path  : null
+	geoloc  : null
+	coords  : null
+	map     : null
+	path    : null
+	distance: null
 
 	constructor: ->
 
+		do @template_rendered
 		do @template_helpers
 		do @template_events
 
@@ -47,6 +49,8 @@ class @RaceView
 					RaceList.update @_id, $push: users: Meteor.user()
 
 
+	template_rendered: ->
+
 		Template.race.rendered = =>
 
 			Tracker.autorun () =>
@@ -68,7 +72,6 @@ class @RaceView
 		
 			do @update_map 
 			
-		
 		else
 
 			google.maps.event.addDomListener window, 'load', do @init_map
@@ -85,6 +88,10 @@ class @RaceView
 			zoom             : 16
 
 		@map = new google.maps.Map map_canvas, map_options
+
+		google.maps.event.addListenerOnce @map, 'tilesloaded', ->
+
+			$('.map').addClass 'loaded'
 
 		do @create_path
 
@@ -118,12 +125,7 @@ class @RaceView
 
 		@map.panTo new_path_coord
 
-		distance  = google.maps.geometry.spherical.computeLength( path )
-		@distance = ( distance * 0.001 ).toFixed 2
+		distance = google.maps.geometry.spherical.computeLength( path )
+		distance = ( distance * 0.001 ).toFixed 2
 
-		do @update_distance
-
-
-	update_distance: ->
-
-		Meteor.call 'update_distance', @id, Meteor.userId(), @distance
+		Meteor.call 'update_distance', Session.get('race_id'), Meteor.userId(), @distance

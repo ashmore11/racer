@@ -8,11 +8,5 @@ Meteor.methods
 
 			 'users.$.profile.distance': ( distance or '0.00' ) + ' km'
 
-		Meteor.users.update _id: user_id,
-
-			$set:
-
-				'profile.distance': ( distance or '0.00' ) + ' km'
-
 
 	
