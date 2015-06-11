@@ -4,7 +4,6 @@ class @RaceView
 	coords  : null
 	map     : null
 	path    : null
-	distance: null
 
 	constructor: ->
 
@@ -29,7 +28,7 @@ class @RaceView
 
 			speed: =>
 
-				return Geolocation.currentLocation()?.coords.speed or 0
+				return Math.floor( Geolocation.currentLocation()?.coords.speed * 3.6 ) or 0
 
 
 	template_events: ->
@@ -128,4 +127,4 @@ class @RaceView
 		distance = google.maps.geometry.spherical.computeLength( path )
 		distance = ( distance * 0.001 ).toFixed 2
 
-		Meteor.call 'update_distance', Session.get('race_id'), Meteor.userId(), @distance
+		Meteor.call 'update_distance', Session.get('race_id'), Meteor.userId(), distance
