@@ -11,6 +11,8 @@ class @RaceView
 		do @template_helpers
 		do @template_events
 
+		Meteor.call 'update_distance', 0
+
 
 	template_helpers: ->
 
@@ -18,7 +20,9 @@ class @RaceView
 
 			user_in_race: ->
 
-				return RaceList.find( _id: @_id, users: $elemMatch: _id: Meteor.userId() ).fetch().length > 0
+				race_list = RaceList.findOne @_id
+
+				return _.contains race_list.users, Meteor.userId()
 
 		Template.race.helpers
 
@@ -30,6 +34,16 @@ class @RaceView
 
 				return Math.floor( Geolocation.currentLocation()?.coords.speed * 3.6 ) or 0
 
+			competitors: ->
+
+				# Get the array of user id's from the current race 
+				ids = RaceList.findOne( @_id ).users
+
+				# Fetch the users using the array of id's and sort by distance
+				users = Meteor.users.find( { _id: { $in: ids } }, { sort: { 'profile.distance': -1 } } ).fetch()
+
+				return users
+
 
 	template_events: ->
 
@@ -37,7 +51,7 @@ class @RaceView
 
 			'click .join-race-btn': ( event ) ->
 
-				Meteor.call 'update_users_array', @_id, Meteor.user()
+				Meteor.call 'update_users_array', @_id
 
 
 	template_rendered: ->
@@ -54,10 +68,8 @@ class @RaceView
 	init: ->
 
 		@coords =
-			accuracy  : Math.floor @geoloc.coords.accuracy
 			latitude  : @geoloc.coords.latitude
 			longitude : @geoloc.coords.longitude
-			speed     : Math.floor( @geoloc.coords.speed * 3.6 ) or 0
 
 		if @map
 		
@@ -118,4 +130,4 @@ class @RaceView
 		distance = google.maps.geometry.spherical.computeLength( path )
 		distance = ( distance * 0.001 ).toFixed 2
 
-		Meteor.call 'update_distance', Session.get('race_id'), Meteor.userId(), distance
+		Meteor.call 'update_distance', distance

@@ -32,14 +32,10 @@
 	ul.users
 		
 		li.user
+			position     : relative
 			padding      : 10px 0
 			border-bottom: 1px solid #111
-			
-			&:nth-child(odd)
-				background: linear-gradient( top, rgba(0,0,0,0.2), rgba(0,0,0,0.1), rgba(0,0,0,0.2) )
-				
-			&:nth-child(even)
-				background: linear-gradient( top, rgba(0,0,0,0.1), rgba(0,0,0,0.2), rgba(0,0,0,0.1) )
+			background   : linear-gradient( top, rgba(0,0,0,0.25), rgba(0,0,0,0.1), rgba(0,0,0,0.25) )
 			
 			img
 				width         : 30px
@@ -51,16 +47,29 @@
 				text-transform: uppercase
 				
 			.profile
-			.distance
-				display: inline-block
-				
-			.profile
+				display    : inline-block
 				margin-left: 20px
 				
 			.distance
+				display     : inline-block
 				float       : right
 				margin-top  : 6px
-				margin-right: 20px
+				margin-right: 40px
+				
+			.arrow
+				absolute : top 50% right 20px
+				transform: translateY(-50%)
+				
+				.line
+					width           : 2px
+					height          : 10px
+					background-color: #111
+					
+					&:nth-child(1)
+						transform: rotate(-45deg) translateY(3px)
+						
+					&:nth-child(2)
+						transform: rotate(45deg) translateY(-3px)
 	
 	.map
 		absolute: bottom 110px left 1%

@@ -1,20 +1,42 @@
 Meteor.methods
 	
-	update_distance: ( race_id, user_id, distance ) ->
+	update_distance: ( distance ) ->
 
-		RaceList.update _id: race_id, users: $elemMatch: _id: user_id,
+		unless @userId
+
+			throw new Meteor.Error 401, 'You must be logged in'
+
+		Meteor.users.update _id: @userId,
 
 			$set: 
 
-			 'users.$.profile.distance': ( distance or '0.00' ) + ' km'
+			 'profile.distance': distance or 0
 
 
-	update_users_array: ( id, user ) ->
+	update_users_array: ( id ) ->
 
-		if RaceList.find( _id: id, users: $elemMatch: _id: user._id ).fetch().length > 0
+		unless @userId
 
-			RaceList.update id, $pull: users: user
+			throw new Meteor.Error 401, 'You must be logged in'
+
+		raceList = RaceList.findOne id
+
+		unless raceList
+			
+			throw new Meteor.Error 404, 'The list was not found'
+
+		if _.contains raceList.users, @userId
+		
+			RaceList.update id, 
+
+				$pull: 
+
+					users: @userId
 
 		else
 
-			RaceList.update id, $push: users: user
+			RaceList.update id, 
+
+				$addToSet: 
+
+					users: @userId

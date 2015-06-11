@@ -57,6 +57,4 @@ class @AppRouter
 			action : ->
 				return unless @ready()
 
-				Session.set 'race_id', @params.id
-
 				@render 'race'

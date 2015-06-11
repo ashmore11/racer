@@ -14,15 +14,19 @@ template( name="race" )
 		
 		ul.users
 
-			each users
+			each competitors
 
 				li.user
 
 					.profile
 						img( src="{{ profile.image }}" )
-						span.name {{ services.facebook.first_name }}
+						span.name {{ profile.name }}
 
-					.distance {{ profile.distance }}
+					.distance {{ profile.distance }} km
+
+					.arrow
+						.line
+						.line
 
 
 		if user_in_race

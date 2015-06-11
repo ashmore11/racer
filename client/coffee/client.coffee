@@ -17,10 +17,10 @@ class @Client
 
 	generate_views: ->
 
-		window.home_view     = new HomeView
-		window.settings_view = new SettingsView
-		window.races_view    = new RacesView
-		window.race_view     = new RaceView
+		home_view     = new HomeView
+		settings_view = new SettingsView
+		races_view    = new RacesView
+		race_view     = new RaceView
 		
 
 	update_user: ->
