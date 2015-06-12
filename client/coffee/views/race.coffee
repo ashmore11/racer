@@ -39,7 +39,7 @@ class @RaceView
 				# Get the array of user id's from the current race 
 				ids = RaceList.findOne( @_id ).users
 
-				# Fetch the users using the array of id's and sort by distance
+				# Fetch the users using the array of id's and sort by greatest distance
 				users = Meteor.users.find( { _id: { $in: ids } }, { sort: { 'profile.distance': -1 } } ).fetch()
 
 				return users
@@ -60,18 +60,23 @@ class @RaceView
 
 			Tracker.autorun () =>
 
-				@geoloc = do Geolocation.currentLocation
-
-				do @init if @geoloc
+				do @setup_map if Geolocation.currentLocation()
 
 
-	init: ->
+	setup_map: ->
+
+		###
+		@TODO
+		Add meteor gmaps package: https://github.com/dburles/meteor-google-maps
+		###
 
 		@coords =
-			latitude  : @geoloc.coords.latitude
-			longitude : @geoloc.coords.longitude
+			latitude  : Geolocation.currentLocation().coords.latitude
+			longitude : Geolocation.currentLocation().coords.longitude
 
 		if @map
+
+			google.maps.event.trigger @map, 'resize'
 		
 			do @update_map 
 			
