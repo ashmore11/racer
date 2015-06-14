@@ -33,9 +33,12 @@
 		
 		li.user
 			position     : relative
-			padding      : 10px 0
-			border-bottom: 1px solid #111
-			background   : linear-gradient( top, rgba(0,0,0,0.25), rgba(0,0,0,0.1), rgba(0,0,0,0.25) )
+			padding      : 8px 0
+			border-bottom: 1px solid rgba(0,0,0,0.1)
+			background   : linear-gradient( top, rgba(0,0,0,0.2), rgba(0,0,0,0.1), rgba(0,0,0,0.2) )
+			
+			a
+				display: block
 			
 			img
 				width         : 30px
@@ -45,6 +48,7 @@
 			
 			span
 				text-transform: uppercase
+				vertical-align: middle
 				
 			.profile
 				display    : inline-block
@@ -53,7 +57,7 @@
 			.distance
 				display     : inline-block
 				float       : right
-				margin-top  : 6px
+				margin-top  : 7px
 				margin-right: 40px
 				
 			.arrow
@@ -71,21 +75,10 @@
 					&:nth-child(2)
 						transform: rotate(45deg) translateY(-3px)
 	
-	.map
-		absolute: bottom 110px left 1%
-		width   : 98%
-		height  : 140px
-		overflow: hidden
-		
-		&.loaded
-			#map_canvas
-				transform: translateY(0)
-
-		#map_canvas
-			width     : 100%
-			height    : 100%
-			transform : translateY(100%)
-			transition: transform 0.75s ease-in-out
+	.map-container
+		width   : 1px
+		height  : 1px
+		display : none
 	
 	.join-race-btn
 		absolute  : bottom left

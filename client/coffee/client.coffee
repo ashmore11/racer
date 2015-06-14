@@ -2,61 +2,81 @@ class @Client
 
 	constructor: ->
 
+		window.pathCoords = [] 
+
 		Tracker.autorun =>
 
 			Meteor.subscribe 'user'
 			Meteor.subscribe 'users'
 			Meteor.subscribe 'races'
 
-			do @update_user
+			do @updateUser
+			do @updateCoords if Geolocation.currentLocation()
 
-		do @set_false
-		do @bind_header
-		do @generate_views
+		do @setFalse
+		do @bindHeader
+		do @generateViews
+
+		Session.set 'map:loaded', false
+
+		GoogleMaps.load v: 3, libraries: 'geometry'
 
 
-	generate_views: ->
+	generateViews: ->
 
-		home_view     = new HomeView
-		settings_view = new SettingsView
-		races_view    = new RacesView
-		race_view     = new RaceView
+		homeView     = new HomeView
+		settingsView = new SettingsView
+		racesView    = new RacesView
+		raceView     = new RaceView
+		raceUserView = new RaceUserView
 		
 
-	update_user: ->
+	updateUser: ->
 
 		if Meteor.userId()
 
-			user    = Meteor.users.findOne Meteor.userId()
-			fb_id   = user?.services?.facebook.id
-			img_src = "http://graph.facebook.com/" + fb_id + "/picture/?type=large"
+			user   = Meteor.users.findOne Meteor.userId()
+			fbId   = user?.services?.facebook.id
+			imgSrc = "http://graph.facebook.com/" + fbId + "/picture/?type=large"
 
-			Meteor.users.update Meteor.userId(), $set: 'profile.image': img_src
+			Meteor.users.update Meteor.userId(), $set: 'profile.image': imgSrc
 
-	bind_header: ->
+
+	updateCoords: ->
+
+		lat = Geolocation.currentLocation().coords.latitude
+		lon = Geolocation.currentLocation().coords.longitude
+
+		coord = [ lat, lon ]
+
+		window.pathCoords.push coord
+
+
+	bindHeader: ->
 
 		Template.header.helpers
 
-			active: => if @nav_active() then 'active' else ''
+			active: => if @navActive() then 'active' else ''
 
 		Template.header.events
 
 			'click .nav_cta': =>
+
+				if @navActive() then @setFalse() else @setTrue()
+
+			'click a': =>
 				
 				do event.preventDefault
-				do event.stopPropagation
-
-				if @nav_active() then @set_false() else @set_true()
-
-			'click a' : =>
-				
-				do event.preventDefault
-				do event.stopPropagation
 
 				Router.go event.target.attributes[0].value
 
-				do @set_false
+				do @setFalse
 
-	nav_active: -> Session.equals 'nav_active', true
-	set_true: ->   Session.set 'nav_active',    true
-	set_false: ->  Session.set 'nav_active',    false
+			'click .back': =>
+
+				do history.back
+				do @setFalse
+
+	navActive: -> Session.equals 'nav_active', true
+	setTrue: ->   Session.set 'nav_active',    true
+	setFalse: ->  Session.set 'nav_active',    false

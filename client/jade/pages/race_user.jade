@@ -1,0 +1,15 @@
+template( name="raceUser" )
+
+	#race_user.page
+
+		.user
+					
+			.name
+				span {{ currentUser.profile.name }}
+
+			.distance
+				span DISTANCE: {{ currentUser.profile.distance }} km
+
+		.map-container
+
+			+googleMap( name="userMap" options=mapOptions )

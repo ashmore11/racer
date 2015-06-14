@@ -1,6 +1,6 @@
 Meteor.methods
 	
-	update_distance: ( distance ) ->
+	updateDistance: ( distance ) ->
 
 		unless @userId
 
@@ -13,7 +13,7 @@ Meteor.methods
 			 'profile.distance': distance or 0
 
 
-	update_users_array: ( id ) ->
+	updateUsersArray: ( id ) ->
 
 		unless @userId
 

@@ -3,12 +3,12 @@ class @Server
 	constructor: ->
 
 		# Create timer to check if one hour has passed
-		Meteor.setInterval @check_time, 1000
+		Meteor.setInterval @checkTime, 1000
 
-		do @init_races if RaceList.find().fetch().length is 0
+		do @initRaces if RaceList.find().fetch().length is 0
 
 
-	init_races: ->
+	initRaces: ->
 
 		# Create initial races
 		for i in [ 0...6 ]
@@ -18,7 +18,7 @@ class @Server
 				users: []
 
 
-	check_time: =>
+	checkTime: =>
 
 		time = new Date
 		mins = do time.getMinutes
@@ -39,10 +39,10 @@ class @Server
 		# If one hour has passed
 		if mins is 0 and secs is 0
 
-			do @update_races
+			do @updateRaces
 
 
-	update_races: ->
+	updateRaces: ->
 
 		# Remove finished race
 		RaceList.remove RaceList.find().fetch()[0]._id

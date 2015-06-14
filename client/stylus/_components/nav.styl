@@ -24,6 +24,9 @@
 			display   : block
 			margin    : 10px 0
 			font-size : 20px
+			
+			a
+				color: white
 	
 .nav_cta
 	absolute   : top right
@@ -60,3 +63,21 @@
 			
 		&:last-child
 			margin-bottom: 0
+			
+.back
+	
+	.arrow
+		absolute: top 8px left 10px
+		padding : 4px 12px
+		z-index : 1000
+		
+		.line
+			width           : 2px
+			height          : 12px
+			background-color: #FFF
+			
+			&:nth-child(1)
+				transform: rotate(45deg) translateY(3px)
+				
+			&:nth-child(2)
+				transform: rotate(-45deg) translateY(-3px)

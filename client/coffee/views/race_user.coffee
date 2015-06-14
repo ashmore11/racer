@@ -1,4 +1,4 @@
-class @RaceView
+class @RaceUserView
 
 	map           : null
 	path          : null
@@ -7,45 +7,12 @@ class @RaceView
 	constructor: ->
 
 		do @initHelpers
-		do @initEvents
 		do @rendered
 
 
 	initHelpers: ->
 
-		Template.race.helpers
-
-			userInRace: ->
-
-				raceList = RaceList.findOne @_id
-
-				return _.contains raceList.users, Meteor.userId()
-
-			isUser: ->
-
-				@_id is Meteor.userId()
-
-			userUrl: ->
-
-				url = "/races/#{Session.get('current:race:id')}/#{@_id}"
-
-			accuracy: =>
-
-				return Geolocation.currentLocation()?.coords.accuracy or 0
-
-			speed: =>
-
-				return Math.floor( Geolocation.currentLocation()?.coords.speed * 3.6 ) or 0
-
-			competitors: ->
-
-				# Get the array of user id's from the current race 
-				ids = RaceList.findOne( @_id ).users
-
-				# Fetch the users using the array of id's and sort by greatest distance
-				users = Meteor.users.find( { _id: { $in: ids } }, { sort: { 'profile.distance': -1 } } ).fetch()
-
-				return users
+		Template.raceUser.helpers
 
 			mapOptions: ->
 
@@ -62,25 +29,10 @@ class @RaceView
 						center           : new google.maps.LatLng lat, lon
 					}
 
-			mapReady: ->
-
-				loaded = if Session.get('map:loaded') is true then 'loaded' else ''
-
-				return loaded
-
-
-	initEvents: ->
-
-		Template.race.events
-
-			'click .join-race-btn': ( event ) ->
-
-				Meteor.call 'updateUsersArray', @_id
-
 
 	rendered: ->
 
-		Template.race.rendered = =>
+		Template.raceUser.rendered = =>
 
 			@templateActive = true
 
@@ -98,14 +50,14 @@ class @RaceView
 				if Geolocation.currentLocation() and @map
 
 					if @templateActive
-						
-						do @updateCoords
 
+						do @updateCoords
+						
 						Tracker.nonreactive =>
 							
 							do @updateMap
 
-		Template.race.destroyed = =>
+		Template.raceUser.destroyed = =>
 
 			@templateActive = false
 

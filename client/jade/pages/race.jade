@@ -4,7 +4,7 @@ template( name="race" )
 
 		h1 {{ _id }}
 
-		if user_in_race
+		if userInRace
 
 			.stats
 				.accuracy ACCURACY: {{ accuracy }} METERS
@@ -18,20 +18,33 @@ template( name="race" )
 
 				li.user
 
-					.profile
-						img( src="{{ profile.image }}" )
-						span.name {{ profile.name }}
+					if isUser
 
-					.distance {{ profile.distance }} km
+						a( href="{{ userUrl }}" )
 
-					.arrow
-						.line
-						.line
+							.profile
+								img( src="{{ profile.image }}" )
+								span.name {{ profile.name }}
+
+							.distance {{ profile.distance }} km
+
+							.arrow
+								.line
+								.line
+
+					else
+
+						.profile
+							img( src="{{ profile.image }}" )
+							span.name {{ profile.name }}
+
+						.distance {{ profile.distance }} km
 
 
-		if user_in_race
+		if userInRace
 
-			.map: #map_canvas
+			.map-container( class="{{ mapReady }}" )
+				+googleMap( name="userMap" options=mapOptions )
 
 			.join-race-btn LEAVE RACE
 
