@@ -131,5 +131,3 @@ class @RaceUserView
 
 		Meteor.call 'updateDistance', distance
 
-		console.log distance
-

@@ -24,10 +24,6 @@ class @AppRouter
 
 				do @next
 
-		onStop: ->
-
-			# Session.set 'map:loaded', false
-
 
 	Router.map ->
 
@@ -42,18 +38,6 @@ class @AppRouter
 				return unless @ready()
 				
 				@render 'home'
-
-		### 
-		@ROUTE SETTINGS
-		###
-		@route 'settings',
-			path: '/settings'
-			
-			action: ->
-			
-				return unless @ready()
-
-				@render 'settings'
 
 		### 
 		@ROUTE RACES
@@ -112,3 +96,4 @@ class @AppRouter
 				return unless @ready()
 
 				@render 'raceUser'
+

@@ -35,11 +35,15 @@ class @Client
 
 		if Meteor.userId()
 
-			user   = Meteor.users.findOne Meteor.userId()
-			fbId   = user?.services?.facebook.id
-			imgSrc = "http://graph.facebook.com/" + fbId + "/picture/?type=large"
+			user      = Meteor.users.findOne Meteor.userId()
+			firstName = user?.services?.facebook.first_name
+			fbId      = user?.services?.facebook.id
+			imgSrc    = "http://graph.facebook.com/" + fbId + "/picture/?type=large"
 
-			Meteor.users.update Meteor.userId(), $set: 'profile.image': imgSrc
+			Meteor.users.update Meteor.userId(), 
+				$set: 
+					'profile.image'     : imgSrc
+					'profile.firstName' : firstName
 
 
 	updateCoords: ->

@@ -80,7 +80,7 @@ class @RaceView
 
 	rendered: ->
 
-		Template.race.rendered = =>
+		Template.race.created = =>
 
 			@templateActive = true
 
@@ -104,6 +104,11 @@ class @RaceView
 						Tracker.nonreactive =>
 							
 							do @updateMap
+
+		Template.race.rendered = ->
+
+			#
+			
 
 		Template.race.destroyed = =>
 
@@ -178,6 +183,4 @@ class @RaceView
 		distance = ( distance * 0.001 ).toFixed 2
 
 		Meteor.call 'updateDistance', distance
-
-		console.log distance
 
