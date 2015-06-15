@@ -2,7 +2,12 @@ class @HomeView
 
 	constructor: ->
 
-		do @login
+		do @events
+		do @helpers
+		do @rendered
+
+
+	helpers: ->
 
 		Template.home.helpers
 
@@ -11,10 +16,17 @@ class @HomeView
 				return Meteor.users.find().fetch().length
 
 
-	login: ->
+	events: ->
 
 		Template.login.events
 			
 			'click .login': ->
 
 				do Meteor.loginWithFacebook
+
+
+	rendered: ->
+
+		Template.home.rendered = ->
+
+			#

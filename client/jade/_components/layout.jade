@@ -1,19 +1,14 @@
 template(name="layout")
 
+	.background
+
 	if currentUser
 
 		+header
 
-	.background
+	.container
 
-	main#main
-
-		+transition
-			+yield
-
-
-template( name="transition" )
-	+UI.contentBlock
+		+yield
 
 template( name="header" )
 

@@ -24,6 +24,26 @@ class @AppRouter
 
 				do @next
 
+		onAfterAction: ->
+
+			if Session.get 'router:back'
+			
+				animationClass = 'slideInRight'
+			
+				Session.set 'router:back', false
+			
+			else
+
+				animationClass = 'slideInLeft'
+
+			$('.container').addClass animationClass
+
+			Meteor.setTimeout( ->
+
+				$('.container').removeClass animationClass
+
+			, 1000 )
+
 
 	Router.map ->
 
@@ -39,7 +59,7 @@ class @AppRouter
 				@render 'home'
 
 		### 
-		@ROUTE RACES
+		@ROUTE RACE LIST
 		###
 		@route '/races',
 			
@@ -50,19 +70,13 @@ class @AppRouter
 				@render 'races'
 
 		### 
-		@ROUTE RACE
+		@ROUTE RACE PREVIEW
 		###
 		@route '/races/:race_id',
 			
 			data: -> 
 
 				RaceList.findOne _id: @params.race_id
-			
-			onBeforeAction: ->
-				
-				do GoogleMaps.load
-				
-				do @next
 
 			action: ->
 			
@@ -73,19 +87,13 @@ class @AppRouter
 				@render 'race'
 
 		### 
-		@ROUTE RACE USER
+		@ROUTE RACE USER MAP
 		###
 		@route '/races/:raceId/:userId',
 			
 			data: -> 
 
 				race: RaceList.findOne _id: @params.raceId
-			
-			onBeforeAction: ->
-				
-				do GoogleMaps.load
-				
-				do @next
 
 			action: ->
 			

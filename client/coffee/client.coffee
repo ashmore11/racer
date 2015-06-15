@@ -2,31 +2,23 @@ class @Client
 
 	constructor: ->
 
-		window.pathCoords = [] 
-
-		Tracker.autorun =>
+		Tracker.autorun () =>
 
 			Meteor.subscribe 'user'
 			Meteor.subscribe 'users'
 			Meteor.subscribe 'races'
 
 			do @updateUser
-			do @updateCoords if Geolocation.currentLocation()
 
-		do @setFalse
 		do @bindHeader
 		do @generateViews
-
-		Session.set 'map:loaded', false
 
 		GoogleMaps.load v: 3, libraries: 'geometry'
 
 
 	generateViews: ->
 
-		transitions  = new Transitions
 		homeView     = new HomeView
-		settingsView = new SettingsView
 		racesView    = new RacesView
 		raceView     = new RaceView
 		raceUserView = new RaceUserView
@@ -47,21 +39,13 @@ class @Client
 					'profile.firstName' : firstName
 
 
-	updateCoords: ->
-
-		lat = Geolocation.currentLocation().coords.latitude
-		lon = Geolocation.currentLocation().coords.longitude
-
-		coord = [ lat, lon ]
-
-		window.pathCoords.push coord
-
-
 	bindHeader: ->
 
 		Template.header.helpers
 
-			active: => if @navActive() then 'active' else ''
+			active: => 
+
+				if @navActive() then 'active' else ''
 
 		Template.header.events
 
@@ -82,6 +66,8 @@ class @Client
 				do history.back
 				do @setFalse
 
-	navActive: -> Session.equals 'nav_active', true
-	setTrue: ->   Session.set 'nav_active',    true
-	setFalse: ->  Session.set 'nav_active',    false
+				Session.set 'router:back', true
+
+	navActive: -> Session.get 'nav:active'
+	setTrue: ->   Session.set 'nav:active', true
+	setFalse: ->  Session.set 'nav:active', false
