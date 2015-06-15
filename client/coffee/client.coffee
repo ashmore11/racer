@@ -24,6 +24,7 @@ class @Client
 
 	generateViews: ->
 
+		transitions  = new Transitions
 		homeView     = new HomeView
 		settingsView = new SettingsView
 		racesView    = new RacesView

@@ -30,8 +30,7 @@ class @AppRouter
 		### 
 		@ROUTE HOME
 		###
-		@route 'home',
-			path: '/'
+		@route '/',
 			
 			action: ->
 				
@@ -42,8 +41,7 @@ class @AppRouter
 		### 
 		@ROUTE RACES
 		###
-		@route 'races',
-			path: '/races'
+		@route '/races',
 			
 			action: ->
 
@@ -54,8 +52,7 @@ class @AppRouter
 		### 
 		@ROUTE RACE
 		###
-		@route 'race',
-			path: '/races/:race_id'
+		@route '/races/:race_id',
 			
 			data: -> 
 
@@ -78,8 +75,7 @@ class @AppRouter
 		### 
 		@ROUTE RACE USER
 		###
-		@route 'race_user',
-			path: '/races/:raceId/:userId'
+		@route '/races/:raceId/:userId',
 			
 			data: -> 
 

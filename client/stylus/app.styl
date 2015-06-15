@@ -29,6 +29,47 @@ a
 
 #main
 .page
+.transition
 	absolute: top left
 	width   : 100%
 	height  : 100%
+	
+@keyframes slideInLeft
+	0%
+		transform: translateX(100%)
+		
+	100%
+		transform: translateX(0)
+		
+.slideInLeft
+	animation: slideInLeft 1s both
+		
+@keyframes slideInRight
+	0%
+		transform: translateX(-100%)
+		
+	100%
+		transform: translateX(0)
+		
+.slideInRight
+	animation: slideInRight 1s both
+		
+@keyframes slideOutLeft
+	0%
+		transform: translateX(0)
+		
+	100%
+		transform: translateX(100%)
+		
+.slideOutLeft
+	animation: slideOutLeft 1s both
+		
+@keyframes slideOutRight
+	0%
+		transform: translateX(0)
+		
+	100%
+		transform: translateX(-100%)
+		
+.slideOutRight
+	animation: slideOutRight 1s both
