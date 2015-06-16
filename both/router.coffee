@@ -26,23 +26,23 @@ class @AppRouter
 
 		onAfterAction: ->
 
-			if Session.get 'router:back'
+			# if Session.get 'router:back'
 			
-				animationClass = 'slideInRight'
+			# 	animationClass = 'slideInRight'
 			
-				Session.set 'router:back', false
+			# 	Session.set 'router:back', false
 			
-			else
+			# else
 
-				animationClass = 'slideInLeft'
+			# 	animationClass = 'slideInLeft'
 
-			$('.container').addClass animationClass
+			# $('.container').addClass animationClass
 
-			Meteor.setTimeout( ->
+			# Meteor.setTimeout( ->
 
-				$('.container').removeClass animationClass
+			# 	$('.container').removeClass animationClass
 
-			, 1000 )
+			# , 1000 )
 
 
 	Router.map ->

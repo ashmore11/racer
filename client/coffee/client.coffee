@@ -71,3 +71,5 @@ class @Client
 	navActive: -> Session.get 'nav:active'
 	setTrue: ->   Session.set 'nav:active', true
 	setFalse: ->  Session.set 'nav:active', false
+
+	

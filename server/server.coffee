@@ -11,10 +11,11 @@ class @Server
 	initRaces: ->
 
 		# Create initial races
-		for i in [ 0...6 ]
+		for i in [ 0...12 ]
 			
 			RaceList.insert
 				index: i
+				live : false
 				users: []
 
 
@@ -34,7 +35,7 @@ class @Server
 		# Create array to hold mins and time
 		time = [ Number( mins ), Number( secs ) ]
 
-		# console.log time
+		console.log time
 		
 		# If one hour has passed
 		if mins is 0 and secs is 0
@@ -45,7 +46,10 @@ class @Server
 	updateRaces: ->
 
 		# Remove finished race
-		RaceList.remove RaceList.find().fetch()[0]._id
+		RaceList.remove live: true
+
+		# Set next race live
+		RaceList.update RaceList.find().fetch()[0]._id, $set: live: true
 
 		# Update the index for the next races
 		RaceList.find().fetch().forEach ( race ) ->
@@ -54,5 +58,6 @@ class @Server
 
 		# Insert next race
 		RaceList.insert
-			index: RaceList.find().fetch().length
+			index: RaceList.find().fetch().length - 1
+			live : false
 			users: []

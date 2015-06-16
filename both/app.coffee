@@ -2,8 +2,8 @@
 @base_path = Meteor.absoluteUrl replaceLocalhost: true
 
 # Timers
-@delay = ( delay, func ) -> setTimeout  func, delay
-@loop  = ( delay, func ) -> setInterval func, delay
+@_delay    = ( delay, func ) -> Meteor.setTimeout  func, delay
+@_interval = ( delay, func ) -> Meteor.setInterval func, delay
 
 # Start the app
 Meteor.startup ->
