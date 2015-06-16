@@ -2,8 +2,12 @@ template( name="races" )
 
 	#races.page
 
+		h1 CURRENT RACES
+
 		ul.races
 
 			each races
 
-				li.race( id="{{ _id }}" index="{{ index }}" ) {{ hours }}:00
+				li.race( id="{{ _id }}" index="{{ index }}" )
+					span.time {{ hours }}:00
+					span.countdown {{ countdown }}
