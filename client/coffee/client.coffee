@@ -35,8 +35,10 @@ class @Client
 
 			Meteor.users.update Meteor.userId(), 
 				$set: 
-					'profile.image'     : imgSrc
-					'profile.firstName' : firstName
+					'profile.image'      : imgSrc
+					'profile.firstName'  : firstName
+					'profile.nickname'   : null
+					'profile.racePoints' : 0
 
 
 	bindHeader: ->

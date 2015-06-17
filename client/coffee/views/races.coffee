@@ -42,6 +42,10 @@ class @RacesView
 
 						return countdown
 
+			competitors: ->
+
+				return RaceList.findOne( @_id ).users.length
+
 		Template.races.created = ->
 
 			countdownInterval = Meteor.setInterval( =>

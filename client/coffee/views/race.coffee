@@ -15,6 +15,21 @@ class @RaceView
 
 		Template.race.helpers
 
+			title: ->
+
+				race = RaceList.findOne @_id
+
+				Date.prototype.addHours = ( h ) ->
+					
+					@setHours @getHours() + h
+					
+					return @
+
+				hours = new Date().addHours ( race.index + 1 )
+				hours = do hours.getHours
+
+				return hours
+
 			userInRace: ->
 
 				race = RaceList.findOne @_id
