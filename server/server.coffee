@@ -11,7 +11,7 @@ class @Server
 	initRaces: ->
 
 		# Create initial races
-		for i in [ 0...24 ]
+		for i in [ 0...6 ]
 			
 			RaceList.insert
 				index : i

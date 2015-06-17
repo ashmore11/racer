@@ -2,7 +2,8 @@ class @RacesView
 
 	constructor: ->
 
-		@countdownDep = new Deps.Dependency
+		countdownDep = new Deps.Dependency
+		countdown    = null
 
 		Template.races.helpers
 
@@ -25,25 +26,58 @@ class @RacesView
 
 				return hours
 
-			countdown: =>
+			countdown: ->
 
-				# race = RaceList.findOne @_id
+				race = RaceList.findOne @_id
 
-				do @countdownDep.depend
+				do countdownDep.depend
 
-				return '1hr ' + @countdown
+				if countdown
 
-		
-		Template.races.created = =>
+					if race.index > 0
+						
+						return race.index + 'h ' + countdown
 
-			do @updateCountdown
+					else
 
-			@countdownInterval = Meteor.setInterval @updateCountdown, 1000
+						return countdown
 
-		Template.races.destroyed = =>
+		Template.races.created = ->
 
-			Meteor.clearInterval @countdownInterval
+			countdownInterval = Meteor.setInterval( =>
 
+				time = new Date
+
+				mins = do time.getMinutes
+				mins = ( 59 - mins ) % 60
+				mins = '0' + mins if mins < 10
+
+				secs = do time.getSeconds
+
+				if secs != 60
+					secs = ( 59 - secs ) % 60
+				else
+					secs = 0
+
+				secs = '0' + secs if secs < 10
+
+				countdown = mins + 'm ' + secs + 's'
+
+				do countdownDep.changed
+
+			, 1000 )
+
+		Template.races.rendered = =>
+
+			$(window).on 'resize', => do @on_resize
+
+			do @on_resize
+
+		Template.races.destroyed = ->
+
+			Meteor.clearInterval countdownInterval
+
+			countdownInterval = null
 
 		Template.races.events
 
@@ -52,23 +86,11 @@ class @RacesView
 				Router.go '/races/' + @_id
 
 
-	updateCountdown: =>
+	on_resize: =>
 
-		time = new Date
+		height = ( $(window).height() - $('.top-bar').height() ) / 6
+		height = height - 4
 
-		mins = do time.getMinutes
-		mins = ( 59 - mins ) % 60
-		mins = '0' + mins if mins < 10
+		$('.race').height height
 
-		secs = do time.getSeconds
-
-		if secs != 60
-			secs = ( 59 - secs ) % 60
-		else
-			secs = 0
-
-		secs = '0' + secs if secs < 10
-
-		@countdown = mins + 'm ' + secs + 's'
-
-		do @countdownDep.changed
+		$( $('.race')[$('.race').length - 1] ).height height + 2

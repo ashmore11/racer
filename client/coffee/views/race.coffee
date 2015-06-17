@@ -17,9 +17,15 @@ class @RaceView
 
 			userInRace: ->
 
-				raceList = RaceList.findOne @_id
+				race = RaceList.findOne @_id
 
-				return _.contains raceList.users, Meteor.userId()
+				return _.contains race.users, Meteor.userId()
+
+			raceLive: ->
+
+				# return RaceList.findOne( Session.get 'current:race:id' ).live
+
+				return true
 
 			isUser: ->
 

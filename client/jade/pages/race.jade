@@ -26,11 +26,13 @@ template( name="race" )
 								img( src="{{ profile.image }}" )
 								span.name {{ profile.firstName }}
 
-							.distance {{ profile.distance }} km
+							if raceLive
 
-							.arrow
-								.line
-								.line
+								.distance {{ profile.distance }} km
+
+								.arrow
+									.line
+									.line
 
 					else
 
@@ -38,7 +40,9 @@ template( name="race" )
 							img( src="{{ profile.image }}" )
 							span.name {{ profile.firstName }}
 
-						.distance {{ profile.distance }} km
+						if raceLive
+
+							.distance {{ profile.distance }} km
 
 
 		if userInRace
