@@ -117,6 +117,8 @@ class @RaceView
 
 		Template.race.created = =>
 
+			# Meteor.call 'resetCoords'
+
 			GoogleMaps.ready 'userMap', ( map ) =>
 
 				@map        = map.instance

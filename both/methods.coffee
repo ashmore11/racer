@@ -15,7 +15,16 @@ Meteor.methods
 
 			$addToSet:
 
-				raceCoords : { lat: lat, lon: lon }
+				raceCoords: { lat: lat, lon: lon }
+
+
+	resetCoords: ->
+
+		Meteor.users.update _id: @userId,
+
+			$set:
+
+				raceCoords: []
 
 	
 	updateDistance: ( distance ) ->
