@@ -13,19 +13,21 @@ template(name="layout")
 
 template( name="header" )
 
-	.top-bar
+	if hasNickname
 
-		unless routeIsHome
+		.top-bar
 
-			.back
-				.arrow
-					.line
-					.line
+			unless routeIsHome
 
-		.nav_cta( class="#{active}" )
-			.line
-			.line
-			.line
+				.back
+					.arrow
+						.line
+						.line
+
+			.nav_cta( class="#{active}" )
+				.line
+				.line
+				.line
 
 	header#nav( class="#{active}" )
 

@@ -21,27 +21,63 @@
 			
 	.users
 		margin-top: 20px
-		margin-bottom: 100px
+		margin-bottom: 10px
 		
-	.nickname
-		margin: 10px 0
+	form.nickname
+		width    : 80%
+		absolute : top 50% left 50%
+		transform: translate(-50%, -50%)
+		
+		h1
+			font-size     : 30px
+			margin-bottom : 20px
+			text-transform: uppercase
+		
+		span
+			display    : block
+			line-height: 22px
 		
 		.enter-name
 			margin-bottom: 10px
+			
+		.name-criteria
+			span
+				margin-bottom: 10px
+			
 		
 		input
+			display         : block
+			margin          : 40px auto 50px
 			height          : 60px
-			width           : 98%
-			margin          : 0 0.5% 10px
-			border          : none
+			width           : 80%
 			outline         : none
-			background-color: rgba(0,0,0,0.5)
+			background-color: rgba(0,0,0,0.3)
 			color           : white
 			font-size       : 28px
 			letter-spacing  : 1px
 			text-align      : center
 			text-transform  : uppercase
 			font-family     : 'Oswald', sans-serif
+			border          : 2px solid #111
+			box-shadow      : inset 0px 0px 10px 0px rgba(0,0,0,0.6)
+			text-shadow     : 0px 0px 10px rgba(0,0,0,0.5)
+			
+		button
+			width         : 60%
+			height        : 50px
+			border        : 2px solid greenyellow
+			border-radius : 10px
+			background    : linear-gradient( top, #333, #111 )
+			color         : white
+			font-family   : 'Oswald', sans-serif
+			font-size     : 18px
+			box-shadow    : 0px 0px 20px 0px rgba(0,0,0,0.6)
+			letter-spacing: 2px
+			transition    : opacity 0.5s ease-out
+			
+			&.disabled
+				opacity: 0.3
+			
 			
 	.race
 	.login

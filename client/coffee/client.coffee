@@ -18,10 +18,9 @@ class @Client
 
 	generateViews: ->
 
-		homeView     = new HomeView
-		racesView    = new RacesView
-		raceView     = new RaceView
-		raceUserView = new RaceUserView
+		homeView  = new HomeView
+		racesView = new RacesView
+		raceView  = new RaceView
 		
 
 	updateUser: ->
@@ -52,6 +51,10 @@ class @Client
 
 				return Router.current().route.getName() is 'home'
 
+			hasNickname: ->
+
+				return Meteor.user().profile.nickname?
+
 		Template.header.events
 
 			'click .nav_cta': =>
@@ -68,10 +71,18 @@ class @Client
 
 			'click .back': =>
 
-				do history.back
-				do @setFalse
+				if Session.get 'map:active'
+					
+					$('.map-container').removeClass 'active'
 
-				Session.set 'router:back', true
+					Session.set 'map:active', false
+
+				else
+
+					do history.back
+					do @setFalse
+
+					Session.set 'router:back', true
 
 	navActive: -> Session.get 'nav:active'
 	setTrue: ->   Session.set 'nav:active', true

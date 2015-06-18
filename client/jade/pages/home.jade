@@ -4,48 +4,42 @@ template( name="home" )
 
 		if currentUser
 
-			+user
-
-			.users ACTIVE USERS: {{ active_users }}
-
 			if noNickname
 
-				+nickname
+				form.nickname
 
-			+find_race
+					.enter-name
+						h1 WELCOME {{ currentUser.profile.firstName }}!
+						span PLEASE CREATE A USERNAME BELOW
+
+					.name-criteria
+						span THIS WILL BE THE NAME YOUR COMPETITORS WILL KNOW YOU AS.
+						span PLEASE USE BETWEEN 6 AND 12 CHARACTERS.
+
+					input( type="text" name="text" maxlength="12" )
+
+					button.disabled( type="submit" ).save-name SAVE
+
+			else
+
+				.user
+				
+					.name
+						span {{ currentUser.profile.nickname }}
+					
+					.profile-picture
+						img( src="{{ currentUser.profile.image }}" )
+
+					.points YOUR POINTS: {{ currentUser.profile.racePoints }}
+					
+					.active-users ACTIVE RUNNERS: {{ active_users }}
+
+				a.race( href="{{ pathFor 'races' }}" ) FIND A RACE
 		
 		else
 
-			+login
+			.login
 
-template( name="nickname" )
+				span LOGIN WITH FACEBOOK
 
-	form.nickname
-
-		.enter-name PLEASE CREATE A USERNAME
-
-		input( type="text" name="text" )
-
-		button( type="submit" ).save-name SAVE
-
-template( name="user" )
-
-	.user
-				
-		.name
-			span {{ currentUser.profile.nickname }}
-		
-		.profile-picture
-			img( src="{{ currentUser.profile.image }}" )
-
-
-template( name="find_race" )
-
-	a.race( href="{{ pathFor 'races' }}" ) FIND A RACE
-
-
-template( name="login" )
-
-	.login
-
-		span LOGIN WITH FACEBOOK
+	

@@ -4,7 +4,6 @@ class @HomeView
 
 		do @events
 		do @helpers
-		do @rendered
 
 
 	helpers: ->
@@ -22,13 +21,23 @@ class @HomeView
 
 	events: ->
 
-		Template.login.events
+		Template.home.events
 			
 			'click .login': ->
 
 				do Meteor.loginWithFacebook
 
-		Template.nickname.events
+			'keyup input': ( event ) ->
+
+				name = $('input').val()
+
+				if name.length >= 6
+
+					$('button').removeClass 'disabled'
+
+				else
+
+					$('button').addClass 'disabled'
 
 			'submit .nickname': ( event ) ->
 
@@ -36,15 +45,6 @@ class @HomeView
 
 				name = event.target.text.value
 
-				nameExists = Meteor.users.findOne( _id: Meteor.userId, 'profile.nickname': $exists: true )?
-
-				unless nameExists
+				unless $('input').hasClass 'disabled'
 
 					Meteor.call 'updateNickname', name
-
-
-	rendered: ->
-
-		Template.home.rendered = ->
-
-			#

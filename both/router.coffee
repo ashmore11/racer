@@ -87,18 +87,3 @@ class @AppRouter
 
 				@render 'race'
 
-		### 
-		@ROUTE RACE USER MAP
-		###
-		@route '/races/:raceId/:userId',
-			
-			data: -> 
-
-				race: RaceList.findOne _id: @params.raceId
-
-			action: ->
-			
-				return unless @ready()
-
-				@render 'raceUser'
-

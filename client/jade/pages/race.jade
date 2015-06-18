@@ -24,39 +24,31 @@ template( name="race" )
 
 			each competitors
 
-				li.user
+				li.user( class="{{ isCurrentUser }}" )
 
-					if isUser
+					.profile
+						img( src="{{ profile.image }}" )
+						span.name {{ profile.nickname }}
 
-						a( href="{{ userUrl }}" )
+					if raceLive
 
-							.profile
-								img( src="{{ profile.image }}" )
-								span.name {{ profile.nickname }}
+						.distance {{ profile.distance }} km
 
-							if raceLive
+						if isUser
 
-								.distance {{ profile.distance }} km
-
-								.arrow
-									.line
-									.line
-
-					else
-
-						.profile
-							img( src="{{ profile.image }}" )
-							span.name {{ profile.nickname }}
-
-						if raceLive
-
-							.distance {{ profile.distance }} km
+							.arrow
+								.line
+								.line
 
 
 		if userInRace
 
-			.map-container( class="{{ mapReady }}" )
+			.map-container
 				+googleMap( name="userMap" options=mapOptions )
+
+				.map-user
+					.distance
+						span DISTANCE: {{ currentUser.profile.distance }} km
 
 			.join-race-btn LEAVE RACE
 
