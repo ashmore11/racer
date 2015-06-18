@@ -36,6 +36,10 @@ class @RaceView
 
 				return _.contains race.users, Meteor.userId()
 
+			noUsers: ->
+
+				return RaceList.findOne( @_id ).users.length is 0
+
 			raceLive: ->
 
 				# return RaceList.findOne( Session.get 'current:race:id' ).live
@@ -125,10 +129,6 @@ class @RaceView
 						Tracker.nonreactive =>
 							
 							do @updateMap
-
-		Template.race.rendered = ->
-
-			#
 			
 
 		Template.race.destroyed = =>

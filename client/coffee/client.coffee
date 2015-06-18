@@ -37,7 +37,6 @@ class @Client
 				$set: 
 					'profile.image'      : imgSrc
 					'profile.firstName'  : firstName
-					'profile.nickname'   : null
 					'profile.racePoints' : 0
 
 
@@ -48,6 +47,10 @@ class @Client
 			active: => 
 
 				if @navActive() then 'active' else ''
+
+			routeIsHome: ->
+
+				return Router.current().route.getName() is 'home'
 
 		Template.header.events
 

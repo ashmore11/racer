@@ -92,7 +92,7 @@ class @RacesView
 
 	on_resize: =>
 
-		height = ( $(window).height() - $('.top-bar').height() ) / 6
+		height = ( $(window).height() - $('.top-bar').height() ) / ( RaceList.find().fetch().length - 1 )
 		height = height - 4
 
 		$('.race').height height

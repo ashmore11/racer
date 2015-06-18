@@ -8,19 +8,32 @@ template( name="home" )
 
 			.users ACTIVE USERS: {{ active_users }}
 
+			if noNickname
+
+				+nickname
+
 			+find_race
 		
 		else
 
 			+login
 
+template( name="nickname" )
+
+	form.nickname
+
+		.enter-name PLEASE CREATE A USERNAME
+
+		input( type="text" name="text" )
+
+		button( type="submit" ).save-name SAVE
 
 template( name="user" )
 
 	.user
 				
 		.name
-			span {{ currentUser.profile.name }}
+			span {{ currentUser.profile.nickname }}
 		
 		.profile-picture
 			img( src="{{ currentUser.profile.image }}" )

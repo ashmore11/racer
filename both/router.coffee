@@ -50,7 +50,8 @@ class @AppRouter
 		### 
 		@ROUTE HOME
 		###
-		@route '/',
+		@route 'home',
+			path: '/'
 			
 			action: ->
 				

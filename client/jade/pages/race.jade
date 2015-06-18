@@ -11,6 +11,14 @@ template( name="race" )
 				.splitter
 				.speed SPEED: {{ speed }} KPH
 
+
+		if noUsers
+
+			.no-users
+				h2
+					span THIS RACE HAS NO USERS YET
+					span BE THE FIRST!
+
 		
 		ul.users
 
@@ -24,7 +32,7 @@ template( name="race" )
 
 							.profile
 								img( src="{{ profile.image }}" )
-								span.name {{ profile.firstName }}
+								span.name {{ profile.nickname }}
 
 							if raceLive
 
@@ -38,7 +46,7 @@ template( name="race" )
 
 						.profile
 							img( src="{{ profile.image }}" )
-							span.name {{ profile.firstName }}
+							span.name {{ profile.nickname }}
 
 						if raceLive
 

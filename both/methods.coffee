@@ -1,4 +1,13 @@
 Meteor.methods
+
+	updateNickname: ( name ) ->
+
+		Meteor.users.update _id: @userId, 
+			
+			$set:
+				
+				'profile.nickname' : name
+
 	
 	updateDistance: ( distance ) ->
 
