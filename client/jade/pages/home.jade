@@ -6,7 +6,7 @@ template( name="home" )
 
 			if noNickname
 
-				form.nickname
+				form.username
 
 					.enter-name
 						h1 WELCOME {{ currentUser.profile.firstName }}!
@@ -27,7 +27,7 @@ template( name="home" )
 				.user
 				
 					.name
-						span {{ currentUser.profile.nickname }}
+						span {{ currentUser.profile.username }}
 					
 					.profile-picture
 						img( src="{{ currentUser.profile.image }}" )

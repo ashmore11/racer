@@ -1,12 +1,22 @@
 Meteor.methods
 
-	updateNickname: ( name ) ->
+	updateUser: ( imgSrc, firstName ) ->
+
+		Meteor.users.update _id: @userId,
+
+			$set: 
+				
+				'profile.image'     : imgSrc
+				'profile.firstName' : firstName
+
+
+	updateUsername: ( name ) ->
 
 		Meteor.users.update _id: @userId, 
 			
 			$set:
 				
-				'profile.nickname': name
+				'profile.username': name
 
 
 	updateCoords: ( lat, lon ) ->

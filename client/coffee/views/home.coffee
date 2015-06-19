@@ -14,26 +14,37 @@ class @HomeView
 
 				return Meteor.users.find().fetch().length
 
-			noNickname: ->
+			noUsername: ->
 
-				return !Meteor.user().profile.nickname?
+				return !Meteor.user().profile.username?
 
 
 	events: ->
 
 		Template.home.events
 			
+			###
+			FACEBOOK LOGIN
+			###
 			'click .login': ->
 
-				Meteor.loginWithFacebook {}, ( err ) ->
+				Meteor.loginWithFacebook {}, ( err, result ) ->
 
 					if err then throw new Meteor.Error 'Facebook login failed'
 
+					user      = Meteor.users.findOne Meteor.userId()
+					firstName = user.services.facebook.first_name
+					fbId      = user.services.facebook.id
+					imgSrc    = "http://graph.facebook.com/" + fbId + "/picture/?type=large"
+
+					Meteor.call 'updateUser', imgSrc, firstName
+
+			###
+			TEST USERNAME LENGTH
+			###
 			'keyup input': ( event ) ->
 
-				name = $('input').val()
-
-				if name.length >= 6
+				if $('input').val().length >= 6
 
 					$('button').removeClass 'disabled'
 
@@ -41,18 +52,21 @@ class @HomeView
 
 					$('button').addClass 'disabled'
 
-			'submit .nickname': ( event ) =>
+			###
+			USERNAME VALIDATION
+			###
+			'submit .username': ( event ) =>
 
 				event.preventDefault()
 
 				name       = event.target.text.value.toUpperCase()
-				nameExists = Meteor.users.find( 'profile.nickname' : name ).fetch().length > 0
+				nameExists = Meteor.users.find( 'profile.username' : name ).fetch().length > 0
 
 				if $('button').hasClass 'disabled'
 
 					charToGo = 6 - name.length 
 
-					alert = "Your username must be at least 6 characters. Please add at least another #{charToGo} character(s)."
+					alert = "Your username must be at least 6 characters. Only another #{charToGo} character(s) to go!"
 
 					@animateAlertBox alert
 
@@ -66,7 +80,7 @@ class @HomeView
 
 					else
 
-						Meteor.call 'updateNickname', name
+						Meteor.call 'updateUsername', name
 
 
 	animateAlertBox: ( alert ) ->
