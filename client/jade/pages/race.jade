@@ -45,12 +45,14 @@ template( name="race" )
 
 		if userInRace
 
-			.map-container
-				+googleMap( name="userMap" options=mapOptions )
+			if raceLive
 
-				.map-user
-					.distance
-						span DISTANCE: {{ currentUser.profile.distance }} km
+				.map-container
+					+googleMap( name="userMap" options=mapOptions )
+
+					.map-user
+						.distance
+							span DISTANCE: {{ currentUser.profile.distance }} km
 
 			.join-race-btn LEAVE RACE
 

@@ -102,6 +102,8 @@ class @RaceView
 
 			'click li.currentUser': ( event ) =>
 
+				# if RaceList.findOne( Session.get 'current:race:id' ).live
+
 				$('.map-container').addClass 'active'
 
 				Session.set 'map:active', true
@@ -109,32 +111,30 @@ class @RaceView
 
 	created: ->
 
-		Template.race.created = =>
+		GoogleMaps.ready 'userMap', ( map ) =>
 
-			GoogleMaps.ready 'userMap', ( map ) =>
+			@pathCoords = Meteor.users.findOne( Meteor.userId() ).profile.raceCoords
 
-				@pathCoords = Meteor.users.findOne( Meteor.userId() ).profile.raceCoords
+			coordsExist = _interval 500, =>
+				
+				if @pathCoords?.length > 0
 
-				coordsExist = _interval 500, =>
+					@map = map.instance
+
+					do @createPath
+
+					Meteor.clearInterval coordsExist
+
+		Tracker.autorun () =>
+
+			if Geolocation.currentLocation() and @map
+
+				lat = Geolocation.currentLocation().coords.latitude
+				lon = Geolocation.currentLocation().coords.longitude
 					
-					if @pathCoords?.length > 0
+				Meteor.call 'updateCoords', lat, lon
 
-						@map = map.instance
-
-						do @createPath
-
-						Meteor.clearInterval coordsExist
-
-			Tracker.autorun () =>
-
-				if Geolocation.currentLocation()
-
-					lat = Geolocation.currentLocation().coords.latitude
-					lon = Geolocation.currentLocation().coords.longitude
-						
-					Meteor.call 'updateCoords', lat, lon
-
-					do @updateMap if @map
+				do @updateMap
 
 
 	createPath: ->
