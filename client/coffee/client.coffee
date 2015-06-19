@@ -4,9 +4,9 @@ class @Client
 
 		Tracker.autorun () =>
 
-			Meteor.subscribe 'user'
-			Meteor.subscribe 'users'
-			Meteor.subscribe 'races'
+			# Meteor.subscribe 'user'
+			# Meteor.subscribe 'users'
+			# Meteor.subscribe 'races'
 
 			do @updateUser
 
@@ -34,9 +34,8 @@ class @Client
 
 			Meteor.users.update Meteor.userId(), 
 				$set: 
-					'profile.image'      : imgSrc
-					'profile.firstName'  : firstName
-					'profile.racePoints' : 0
+					'profile.image'     : imgSrc
+					'profile.firstName' : firstName
 
 
 	bindHeader: ->
@@ -83,6 +82,14 @@ class @Client
 					do @setFalse
 
 					Session.set 'router:back', true
+
+			'click .logout': ->
+
+				Meteor.logout ( err ) ->
+
+					if err
+						
+						throw new Meteor.Error 'Logout failed'
 
 	navActive: -> Session.get 'nav:active'
 	setTrue: ->   Session.set 'nav:active', true

@@ -8,7 +8,7 @@ class @RaceView
 
 		do @helpers
 		do @events
-		do @rendered
+		do @created
 
 
 	helpers: ->
@@ -54,10 +54,6 @@ class @RaceView
 
 				if @_id is Meteor.userId() then 'currentUser' else ''
 
-			userUrl: ->
-
-				url = "/races/#{Session.get('current:race:id')}/#{@_id}"
-
 			accuracy: =>
 
 				return Geolocation.currentLocation()?.coords.accuracy or 0
@@ -76,6 +72,10 @@ class @RaceView
 
 				return users
 
+			userIsMoving: ->
+
+				return Meteor.users.findOne( @_id ).profile.distance > 0
+
 			mapOptions: ->
 
 				if GoogleMaps.loaded() and Geolocation.currentLocation()
@@ -91,12 +91,6 @@ class @RaceView
 						center           : new google.maps.LatLng lat, lon
 					}
 
-			mapReady: ->
-
-				loaded = if Session.get('map:loaded') is true then 'loaded' else ''
-
-				return loaded
-
 
 	events: ->
 
@@ -106,78 +100,79 @@ class @RaceView
 
 				Meteor.call 'updateUsersArray', @_id
 
-			'click li.currentUser': ( event ) ->
+			'click li.currentUser': ( event ) =>
 
 				$('.map-container').addClass 'active'
 
 				Session.set 'map:active', true
 
 
-	rendered: ->
+	created: ->
 
 		Template.race.created = =>
 
-			# Meteor.call 'resetCoords'
-
 			GoogleMaps.ready 'userMap', ( map ) =>
 
-				@map        = map.instance
-				@pathCoords = Meteor.users.findOne( Meteor.userId() ).raceCoords
+				@pathCoords = Meteor.users.findOne( Meteor.userId() ).profile.raceCoords
 
-				do @createPath
+				coordsExist = _interval 500, =>
+					
+					if @pathCoords?.length > 0
+
+						@map = map.instance
+
+						do @createPath
+
+						Meteor.clearInterval coordsExist
 
 			Tracker.autorun () =>
 
-				if Geolocation.currentLocation() and @map
+				if Geolocation.currentLocation()
 
 					lat = Geolocation.currentLocation().coords.latitude
 					lon = Geolocation.currentLocation().coords.longitude
-
-					Tracker.nonreactive =>
 						
-						Meteor.call 'updateCoords', lat, lon
+					Meteor.call 'updateCoords', lat, lon
 
-						do @updateMap
+					do @updateMap if @map
 
 
 	createPath: ->
 
-		pathCoord = new google.maps.LatLng @pathCoords[0].lat, @pathCoords[0].lon
-
-		@path = new google.maps.Polyline
-			path          : [ pathCoord ]
+		@polyline = new google.maps.Polyline
+			path          : do @getPath
 			clickable     : false
 			geodesic      : true
 			strokeColor   : '#ADFF2F'
 			strokeOpacity : 1
 			strokeWeight  : 7
 
-		@path.setMap @map
+		@polyline.setMap @map
 
-		@map.setCenter pathCoord
 
-		
-	updateMap: ->
+	getPath: ->
 
 		path = []
 
-		for item in Meteor.users.findOne( Meteor.userId() ).raceCoords
+		for item in @pathCoords
 
 			pathCoord = new google.maps.LatLng item.lat, item.lon
 		
 			path.push pathCoord
 
-		@path.setPath path
+		return path
+
+		
+	updateMap: ->
+
+		path = do @getPath
+
+		@polyline.setPath path
 
 		@map.panTo _.last path
 
-		@setDistance path
-
-
-	setDistance: ( path ) ->
-
 		distance = google.maps.geometry.spherical.computeLength( path )
-		distance = ( distance * 0.001 ).toFixed 2
+		distance = Number ( distance * 0.001 ).toFixed 2
 
 		Meteor.call 'updateDistance', distance
 

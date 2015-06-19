@@ -6,7 +6,7 @@ Meteor.methods
 			
 			$set:
 				
-				'profile.nickname' : name.toUpperCase()
+				'profile.nickname': name
 
 
 	updateCoords: ( lat, lon ) ->
@@ -15,16 +15,7 @@ Meteor.methods
 
 			$addToSet:
 
-				raceCoords: { lat: lat, lon: lon }
-
-
-	resetCoords: ->
-
-		Meteor.users.update _id: @userId,
-
-			$set:
-
-				raceCoords: []
+				'profile.raceCoords': { lat: lat, lon: lon }
 
 	
 	updateDistance: ( distance ) ->
@@ -37,7 +28,7 @@ Meteor.methods
 
 			$set: 
 
-			 'profile.distance': distance or 0
+			 'profile.distance': distance
 
 
 	updateUsersArray: ( id ) ->

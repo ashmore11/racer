@@ -32,7 +32,9 @@ template( name="race" )
 
 					if raceLive
 
-						.distance {{ profile.distance }} km
+						if userIsMoving
+
+							.distance {{ profile.distance }} km
 
 						if isUser
 

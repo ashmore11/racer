@@ -8,12 +8,5 @@
 # Start the app
 Meteor.startup ->
 	
-	if Meteor.isServer
-
-		new Server
-	
-	if Meteor.isClient
-
-		@PathCoords = new Meteor.Collection null
-
-		new Client
+	new Server if Meteor.isServer
+	new Client if Meteor.isClient
