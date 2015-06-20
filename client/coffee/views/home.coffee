@@ -18,6 +18,29 @@ class @HomeView
 
 				return !Meteor.user().profile.username?
 
+			userIsInRaces: ->
+
+				return RaceList.find( users: Meteor.userId() ).fetch().length > 0
+
+			usersRaces: ->
+
+				return RaceList.find users: Meteor.userId()
+
+			raceTime: ->
+
+				race = RaceList.findOne @_id
+
+				Date.prototype.addHours = ( h ) ->
+					
+					@setHours @getHours() + h
+					
+					return @
+
+				hours = new Date().addHours ( race.index + 1 )
+				hours = do hours.getHours
+
+				return hours
+
 
 	events: ->
 
@@ -32,9 +55,8 @@ class @HomeView
 
 					if err then throw new Meteor.Error 'Facebook login failed'
 
-					user      = Meteor.users.findOne Meteor.userId()
-					firstName = user.services.facebook.first_name
-					fbId      = user.services.facebook.id
+					firstName = Meteor.user().services.facebook.first_name
+					fbId      = Meteor.user().services.facebook.id
 					imgSrc    = "http://graph.facebook.com/" + fbId + "/picture/?type=large"
 
 					Meteor.call 'updateUser', imgSrc, firstName

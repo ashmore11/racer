@@ -5,8 +5,6 @@ class @Client
 		do @bindHeader
 		do @generateViews
 
-		GoogleMaps.load v: 3, libraries: 'geometry'
-
 
 	generateViews: ->
 

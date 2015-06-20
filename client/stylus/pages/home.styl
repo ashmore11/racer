@@ -7,23 +7,63 @@
 	text-align: center
 		
 	.user
+		
 		.name
 			display         : block
 			padding         : 15px
 			text-transform  : uppercase
 			color           : white
-			margin-bottom   : 10px
+			margin-bottom   : 20px
 			font-size       : 20px
 			
 		img
 			border-radius: 999px
-			width        : 33.3%
+			width        : 20%
+			box-shadow    : 0px 0px 5px 0px rgba(0,0,0,0.5)
 			
-	.users
-		margin-top: 20px
-		margin-bottom: 10px
+		.points
+		.rank
+			margin          : 20px 0
+			padding         : 20px 0
+			width           : 50%
+			float           : left
+			background-color: rgba(0,0,0,0.5)
+			border-top      : 1px solid #111
+			border-bottom   : 1px solid #111
+			color           : greenyellow
+			
+			span
+				display    : block
+				font-size  : 50px
+				font-weight: bold
+				margin-top : 10px
+				color      : white
+			
+		h2.your-races
+			margin-bottom: 10px
 		
-	form.nickname
+		ul.users-races
+			
+			li.users-race
+				width         : 25%
+				border        : 1px solid greenyellow
+				border-radius : 5px
+				background    : linear-gradient( top, #333, #111 )
+				color         : white
+				font-family   : 'Oswald', sans-serif
+				font-size     : 18px
+				box-shadow    : 0px 0px 5px 0px rgba(0,0,0,0.5)
+				letter-spacing: 2px
+				margin        : 5px
+				display       : inline-block
+				
+				a
+					display  : block
+					color    : white
+					padding  : 10px 15px
+					font-size: 14px
+		
+	form.username
 		width    : 80%
 		absolute : top 50% left 50%
 		transform: translate(-50%, -50%)
@@ -44,7 +84,6 @@
 			span
 				margin-bottom: 10px
 			
-		
 		input
 			display         : block
 			margin          : 40px auto 50px
@@ -91,8 +130,6 @@
 		text-transform  : uppercase
 		visibility      : hidden
 		opacity         : 0
-		
-			
 			
 	.race
 	.login

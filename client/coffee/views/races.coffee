@@ -48,7 +48,7 @@ class @RacesView
 
 		Template.races.created = ->
 
-			countdownInterval = Meteor.setInterval( =>
+			countdownInterval = _interval 1000, =>
 
 				time = new Date
 
@@ -68,8 +68,6 @@ class @RacesView
 				countdown = mins + 'm ' + secs + 's'
 
 				do countdownDep.changed
-
-			, 1000 )
 
 		Template.races.rendered = =>
 

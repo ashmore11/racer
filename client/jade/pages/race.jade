@@ -2,15 +2,13 @@ template( name="race" )
 
 	#race.page
 
-		h1 {{ title }}:00
+		if raceLive
 
-		if userInRace
+			h1 RACE LIVE
 
-			.stats
-				.accuracy ACCURACY: {{ accuracy }} METERS
-				.splitter
-				.speed SPEED: {{ speed }} KPH
+		else
 
+			h1 {{ title }}:00
 
 		if noUsers
 
@@ -19,6 +17,12 @@ template( name="race" )
 					span THIS RACE HAS NO USERS YET
 					span BE THE FIRST!
 
+		if userInRace
+
+			.stats
+				.accuracy ACCURACY: {{ accuracy }} METERS
+				.splitter
+				.speed SPEED: {{ speed }} KPH
 		
 		ul.users
 
@@ -41,7 +45,6 @@ template( name="race" )
 							.arrow
 								.line
 								.line
-
 
 		if userInRace
 

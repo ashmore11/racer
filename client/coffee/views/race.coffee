@@ -1,10 +1,11 @@
 class @RaceView
 
-	map           : null
-	path          : null
-	templateActive: false
+	map  : null
+	path : null
 
 	constructor: ->
+
+		GoogleMaps.load v: 3, libraries: 'geometry'
 
 		do @helpers
 		do @events
@@ -42,9 +43,7 @@ class @RaceView
 
 			raceLive: ->
 
-				# return RaceList.findOne( Session.get 'current:race:id' ).live
-
-				return true
+				return RaceList.findOne( Session.get 'current:race:id' ).live
 
 			isUser: ->
 
@@ -74,7 +73,7 @@ class @RaceView
 
 			userIsMoving: ->
 
-				return Meteor.users.findOne( @_id ).profile.distance > 0
+				return Meteor.user().profile.distance > 0
 
 			mapOptions: ->
 
@@ -86,7 +85,7 @@ class @RaceView
 					return {
 						mapTypeId        : google.maps.MapTypeId.MAP
 						disableDefaultUI : true
-						zoomControl      : false
+						zoomControl      : true
 						zoom             : 16
 						center           : new google.maps.LatLng lat, lon
 					}
@@ -111,30 +110,44 @@ class @RaceView
 
 	created: ->
 
+		Template.race.created = =>
+
+			do @setupMap
+			do @updateCoordsAndMap
+
+
+	setupMap: ->
+
 		GoogleMaps.ready 'userMap', ( map ) =>
 
-			@pathCoords = Meteor.users.findOne( Meteor.userId() ).profile.raceCoords
+			@pathCoords = Meteor.user().profile.raceCoords
 
-			coordsExist = _interval 500, =>
+			coordsExist = _interval 1000, =>
 				
 				if @pathCoords?.length > 0
+
+					Meteor.clearInterval coordsExist
 
 					@map = map.instance
 
 					do @createPath
 
-					Meteor.clearInterval coordsExist
+
+	updateCoordsAndMap: ->
 
 		Tracker.autorun () =>
 
-			if Geolocation.currentLocation() and @map
+			race       = RaceList.findOne Session.get 'current:race:id'
+			userInRace = _.contains race.users, Meteor.userId()
+
+			if userInRace and race.live and Geolocation.currentLocation()
 
 				lat = Geolocation.currentLocation().coords.latitude
 				lon = Geolocation.currentLocation().coords.longitude
 					
 				Meteor.call 'updateCoords', lat, lon
 
-				do @updateMap
+				do @updateMap if @map
 
 
 	createPath: ->
@@ -175,4 +188,17 @@ class @RaceView
 		distance = Number ( distance * 0.001 ).toFixed 2
 
 		Meteor.call 'updateDistance', distance
+
+		# do @fitBounds
+
+
+	fitBounds: ->
+
+		bounds = new google.maps.LatLngBounds
+
+		for coord in @getPath()
+
+			bounds.extend coord
+
+		@map.fitBounds bounds
 

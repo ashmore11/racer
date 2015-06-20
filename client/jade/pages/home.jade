@@ -4,7 +4,7 @@ template( name="home" )
 
 		if currentUser
 
-			if noNickname
+			if noUsername
 
 				form.username
 
@@ -32,9 +32,25 @@ template( name="home" )
 					.profile-picture
 						img( src="{{ currentUser.profile.image }}" )
 
-					.points YOUR POINTS: {{ currentUser.profile.racePoints }}
-					
-					.active-users ACTIVE RUNNERS: {{ active_users }}
+					.points 
+						| POINTS
+						span 125
+
+					.rank
+						| RANK
+						span 3
+
+					if userIsInRaces
+
+						h2.your-races YOUR RACES
+
+						ul.users-races
+							
+							each usersRaces
+
+								li.users-race
+
+									a( href="races/{{ _id }}" ) {{ raceTime }}:00
 
 				a.race( href="{{ pathFor 'races' }}" ) FIND A RACE
 		
