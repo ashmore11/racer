@@ -13,31 +13,37 @@
 			padding         : 15px
 			text-transform  : uppercase
 			color           : white
-			margin-bottom   : 20px
 			font-size       : 20px
 			
-		img
-			border-radius: 999px
-			width        : 20%
-			box-shadow    : 0px 0px 5px 0px rgba(0,0,0,0.5)
-			
-		.points
-		.rank
-			margin          : 20px 0
-			padding         : 20px 0
-			width           : 50%
-			float           : left
-			background-color: rgba(0,0,0,0.5)
-			border-top      : 1px solid #111
+		.information
+			height          : 140px
+			margin          : 0 0 20px 0
+			display         : flex
+			flex-flow       : row wrap
+			justify-content : center
+			align-items     : center
+			background-color: rgba(0,0,0,0.6)
 			border-bottom   : 1px solid #111
-			color           : greenyellow
-			
-			span
-				display    : block
-				font-size  : 50px
-				font-weight: bold
-				margin-top : 10px
-				color      : white
+
+			.points
+			.rank
+			.picture
+				padding         : 20px 0
+				width           : 33.33%
+				float           : left
+				color           : greenyellow
+				
+				img
+					width        : 80%
+					border-radius: 999px
+					box-shadow   : 0px 0px 5px 0px rgba(0,0,0,0.5)
+				
+				span
+					display    : block
+					font-size  : 40px
+					font-weight: bold
+					margin-top : 10px
+					color      : white
 			
 		h2.your-races
 			margin-bottom: 10px
@@ -45,7 +51,7 @@
 		ul.users-races
 			
 			li.users-race
-				width         : 25%
+				width         : 20%
 				border        : 1px solid greenyellow
 				border-radius : 5px
 				background    : linear-gradient( top, #333, #111 )
@@ -60,7 +66,7 @@
 				a
 					display  : block
 					color    : white
-					padding  : 10px 15px
+					padding  : 10px
 					font-size: 14px
 		
 	form.username

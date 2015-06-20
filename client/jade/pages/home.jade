@@ -29,16 +29,21 @@ template( name="home" )
 					.name
 						span {{ currentUser.profile.username }}
 					
-					.profile-picture
-						img( src="{{ currentUser.profile.image }}" )
+					//- .profile-picture
+					//- 	img( src="{{ currentUser.profile.image }}" )
 
-					.points 
-						| POINTS
-						span 125
+					.information
 
-					.rank
-						| RANK
-						span 3
+						.rank
+							| RANK
+							span 113
+
+						.picture
+							img( src="{{ currentUser.profile.image }}" )
+
+						.points 
+							| POINTS
+							span 125
 
 					if userIsInRaces
 
