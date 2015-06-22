@@ -79,11 +79,27 @@ class @AppRouter
 
 				RaceList.findOne _id: @params.race_id
 
+			onBeforeAction: ->
+
+				if RaceList.findOne( _id: @params.race_id )?
+
+					do @next
+
+				else
+
+					do @stop
+
+					@redirect '/'
+
 			action: ->
 			
 				return unless @ready()
 
+				GoogleMaps.load v: 3, libraries: 'geometry'
+
 				Session.set 'current:race:id', @params.race_id
 
 				@render 'race'
+
+					
 

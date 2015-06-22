@@ -26,3 +26,5 @@ fastclick
 dburles:google-maps
 reactive-var
 email
+raix:eventemitter
+matb33:collection-hooks

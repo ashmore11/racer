@@ -5,6 +5,12 @@ class @HomeView
 		do @events
 		do @helpers
 
+		Date.prototype.addHours = ( h ) ->
+					
+			@setHours @getHours() + h
+			
+			return @
+
 
 	helpers: ->
 
@@ -12,7 +18,7 @@ class @HomeView
 
 			active_users: ->
 
-				return Meteor.users.find().fetch().length
+				return Meteor.users.find().count()
 
 			noUsername: ->
 
@@ -20,7 +26,7 @@ class @HomeView
 
 			userIsInRaces: ->
 
-				return RaceList.find( users: Meteor.userId() ).fetch().length > 0
+				return RaceList.find( users: Meteor.userId() ).count() > 0
 
 			usersRaces: ->
 
@@ -28,18 +34,35 @@ class @HomeView
 
 			raceTime: ->
 
-				race = RaceList.findOne @_id
+				index = 0
+				id    = RaceList.findOne( @_id )._id
 
-				Date.prototype.addHours = ( h ) ->
-					
-					@setHours @getHours() + h
-					
-					return @
+				for item, i in RaceList.find().fetch()
 
-				hours = new Date().addHours ( race.index + 1 )
+					if item._id is id
+
+						index = i
+
+						break
+
+				hours = new Date().addHours index
 				hours = do hours.getHours
 
 				return hours
+
+			rank: ->
+
+				rank = 0
+
+				for user, i in Meteor.users.find( {}, sort: 'profile.points': -1 ).fetch()
+
+					if user._id is Meteor.userId()
+
+						rank = i + 1
+
+						break
+
+				return rank
 
 
 	events: ->

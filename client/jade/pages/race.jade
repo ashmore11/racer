@@ -4,11 +4,11 @@ template( name="race" )
 
 		if raceLive
 
-			h1 RACE LIVE
+			h1.race-live RACE LIVE
 
 		else
 
-			h1 {{ title }}:00
+			h1.countdown {{ title }}:00
 
 		if noUsers
 
@@ -19,10 +19,12 @@ template( name="race" )
 
 		if userInRace
 
-			.stats
-				.accuracy ACCURACY: {{ accuracy }} METERS
-				.splitter
-				.speed SPEED: {{ speed }} KPH
+			if raceLive
+
+				.stats
+					.accuracy ACCURACY: {{ accuracy }} METERS
+					.splitter
+					.speed SPEED: {{ speed }} KPH
 		
 		ul.users
 
@@ -36,9 +38,9 @@ template( name="race" )
 
 					if raceLive
 
-						if userIsMoving
+						//- if userIsMoving
 
-							.distance {{ profile.distance }} km
+						.distance {{ profile.distance }} km
 
 						if isUser
 

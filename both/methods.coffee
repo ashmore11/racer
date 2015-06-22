@@ -8,6 +8,7 @@ Meteor.methods
 				
 				'profile.image'     : imgSrc
 				'profile.firstName' : firstName
+				'profile.points'    : 0
 
 
 	updateUsername: ( name ) ->
@@ -26,6 +27,16 @@ Meteor.methods
 			$addToSet:
 
 				'profile.raceCoords': { lat: lat, lon: lon }
+
+	resetCoords: ->
+
+		for user in Meteor.users.find().fetch()
+
+			Meteor.users.update _id: user._id, 
+
+				$set: 
+
+					'profile.raceCoords': []
 
 	
 	updateDistance: ( distance ) ->
@@ -47,13 +58,13 @@ Meteor.methods
 
 			throw new Meteor.Error 401, 'You must be logged in'
 
-		raceList = RaceList.findOne id
+		race = RaceList.findOne id
 
-		unless raceList
+		unless race
 			
 			throw new Meteor.Error 404, 'The list was not found'
 
-		if _.contains raceList.users, @userId
+		if _.contains race.users, @userId
 		
 			RaceList.update id, 
 
@@ -72,7 +83,7 @@ Meteor.methods
 	
 	sendEmail: ( to, from, subject, text ) ->
 
-		check( [ to, from, subject, text ], [ String ] )
+		check [ to, from, subject, text ], [ String ]
 
 		# Let other method calls from the same client start running,
 		# without waiting for the email sending to complete.
@@ -83,3 +94,32 @@ Meteor.methods
 			from   : from
 			subject: subject
 			text   : text
+
+
+	updatePoints: ( firstPlace, secondPlace, thirdPlace ) ->
+
+		# Update first place by 5 points
+		Meteor.users.update _id: firstPlace,
+
+			$inc:
+
+				'profile.points': 5
+
+		return unless secondPlace
+
+		# Update second place by 3 points
+		Meteor.users.update _id: secondPlace,
+
+			$inc:
+
+				'profile.points': 3
+
+		return unless thirdPlace
+
+		# Update third place by 1 points
+		Meteor.users.update _id: thirdPlace,
+
+			$inc:
+
+				'profile.points': 1
+

@@ -5,38 +5,58 @@ class @RacesView
 		countdownDep = new Deps.Dependency
 		countdown    = null
 
+		Date.prototype.addHours = ( h ) ->
+					
+			@setHours @getHours() + h
+			
+			return @				
+
 		Template.races.helpers
 
 			races: ->
 
-				return RaceList.find( live: $not: true ).fetch()
+				return RaceList.find live: $not: true
 
 			hours: ->
 
-				race = RaceList.findOne @_id
+				return if RaceList.findOne( @_id ).live is true
 
-				Date.prototype.addHours = ( h ) ->
-					
-					@setHours @getHours() + h
-					
-					return @
+				index = 0
+				id    = RaceList.findOne( @_id )._id
 
-				hours = new Date().addHours ( race.index + 1 )
+				for item, i in RaceList.find().fetch()
+
+					if item._id is id
+
+						index = i
+
+						break
+
+				hours = new Date().addHours index
 				hours = do hours.getHours
 
 				return hours
 
 			countdown: ->
 
-				race = RaceList.findOne @_id
+				index = 0
+				id    = RaceList.findOne( @_id )._id
+
+				for item, i in RaceList.find().fetch()
+
+					if item._id is id
+
+						index = i - 1
+
+						break
 
 				do countdownDep.depend
 
 				if countdown
 
-					if race.index > 0
+					if index > 0
 						
-						return race.index + 'h ' + countdown
+						return index + 'h ' + countdown
 
 					else
 
@@ -71,9 +91,7 @@ class @RacesView
 
 		Template.races.rendered = =>
 
-			$(window).on 'resize', => do @on_resize
-
-			do @on_resize
+			$('ul.races').height ( $(window).height() - $('.top-bar').height() ) - 5
 
 		Template.races.destroyed = ->
 
@@ -86,13 +104,3 @@ class @RacesView
 			'click .race': ( event ) ->
 
 				Router.go '/races/' + @_id
-
-
-	on_resize: =>
-
-		height = ( $(window).height() - $('.top-bar').height() ) / ( RaceList.find().fetch().length - 1 )
-		height = height - 4
-
-		$('.race').height height
-
-		$( $('.race')[$('.race').length - 1] ).height height + 2

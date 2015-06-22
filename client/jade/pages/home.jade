@@ -36,14 +36,14 @@ template( name="home" )
 
 						.rank
 							| RANK
-							span 113
+							span {{ rank }}
 
 						.picture
 							img( src="{{ currentUser.profile.image }}" )
 
 						.points 
 							| POINTS
-							span 125
+							span {{ currentUser.profile.points }}
 
 					if userIsInRaces
 

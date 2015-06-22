@@ -5,9 +5,11 @@ class @Server
 		process.env.MAIL_URL = "smtp://dev.scottashmore%40gmail.com:13-cheese-ass@smtp.gmail.com:465/"
 
 		# Create timer to check if one hour has passed
-		Meteor.setInterval @checkTime, 1000
+		_interval 1000, => do @checkTime
 
-		do @initRaces if RaceList.find().fetch().length is 0
+		if RaceList.find().count() is 0
+
+			do @initRaces
 
 
 	initRaces: ->
@@ -16,7 +18,6 @@ class @Server
 		for i in [ 0...5 ]
 			
 			RaceList.insert
-				index : i
 				live  : false
 				users : []
 
@@ -25,13 +26,13 @@ class @Server
 
 		time = new Date
 		mins = do time.getMinutes
-		mins = ( 59 - mins ) % 60
+		mins = ( 59 - mins ) % 1
 		secs = do time.getSeconds
 		
 		# Convert seconds to count down from 60 & if seconds is 60, make it 0
 		if secs != 60
 		
-			secs = ( 59 - secs ) % 60
+			secs = ( 59 - secs ) % 30
 		
 		else
 
@@ -40,14 +41,17 @@ class @Server
 		# Create array to hold mins and time
 		time = [ Number( mins ), Number( secs ) ]
 
-		# Send email to users 15 minutes in advance of upcoming race
-		if mins is 15 and secs is 0
+		console.log time
 
-			do @sendEmail
+		# Send email to users 15 minutes in advance of upcoming race
+		# if mins is 15 and secs is 0
+
+		# 	do @sendEmail
 		
 		# If one hour has passed
 		if mins is 0 and secs is 0
 
+			do @updatePoints
 			do @updateRaces
 
 
@@ -65,21 +69,42 @@ class @Server
 			Meteor.call 'sendEmail', to, from, subject, text
 
 
+	updatePoints: ->
+
+		# Get the array of user id's form the current live race
+		ids = RaceList.find( { live: true } ).fetch()[0]?.users
+
+		if ids?.length > 0
+
+			# Fetch the users in the current race sorted by distance
+			sortedUsers = Meteor.users.find( { _id: { $in: ids } }, { sort: { 'profile.distance': -1 } } ).fetch()
+
+			# Create variables for the top 3 positions
+			firstPlace  = sortedUsers[0]?._id
+			secondPlace = sortedUsers[1]?._id
+			thirdPlace  = sortedUsers[2]?._id
+
+			# Call the Meteor method to update users points
+			Meteor.call 'updatePoints', firstPlace, secondPlace, thirdPlace
+
+
 	updateRaces: ->
 
+		# Reset the coords to an empty array
+		Meteor.call 'resetCoords'
+
 		# Remove finished race
-		RaceList.remove live: true
-
-		# Set next race live boolean
-		RaceList.update RaceList.find().fetch()[0]._id, $set: live: true
-
-		# Update the index for the next races
-		RaceList.find().fetch().forEach ( race ) ->
-
-			RaceList.update race._id, $inc: index: -1
+		RaceList.remove { live: true }
 
 		# Insert next race
 		RaceList.insert
-			index : RaceList.find().fetch().length - 1
 			live  : false
 			users : []
+
+		console.log _.first( RaceList.find().fetch() ).live
+
+		# Get the id of the first race
+		id = _.first( RaceList.find().fetch() )._id
+
+		# Set next race live boolean
+		RaceList.update id, $set: live: true
