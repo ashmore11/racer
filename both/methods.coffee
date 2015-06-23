@@ -66,7 +66,7 @@ Meteor.methods
 
 		if _.contains race.users, @userId
 		
-			RaceList.update id, 
+			RaceList.update _id: id, 
 
 				$pull: 
 
@@ -74,7 +74,7 @@ Meteor.methods
 
 		else
 
-			RaceList.update id, 
+			RaceList.update _id: id, 
 
 				$addToSet: 
 
@@ -98,28 +98,50 @@ Meteor.methods
 
 	updatePoints: ( firstPlace, secondPlace, thirdPlace ) ->
 
-		# Update first place by 5 points
-		Meteor.users.update _id: firstPlace,
+		positions = [
+			{ id: firstPlace,  points: 5 }
+			{ id: secondPlace, points: 3 }
+			{ id: thirdPlace,  points: 1 }
+		]
 
-			$inc:
+		for position in positions
 
-				'profile.points': 5
+			break unless position.id
 
-		return unless secondPlace
+			Meteor.users.update _id: position.id,
 
-		# Update second place by 3 points
-		Meteor.users.update _id: secondPlace,
+				$inc:
 
-			$inc:
+					'profile.points': position.points
 
-				'profile.points': 3
 
-		return unless thirdPlace
+	removeLiveRace: ->
 
-		# Update third place by 1 points
-		Meteor.users.update _id: thirdPlace,
+		id = _.first( RaceList.find( {}, { sort: { createdAt: 1 } } ).fetch() )._id
 
-			$inc:
+		RaceList.remove _id: id
 
-				'profile.points': 1
+
+	setLiveRace: ->
+
+		id = _.first( RaceList.find( {}, { sort: { createdAt: 1 } } ).fetch() )._id
+
+		RaceList.update id,
+
+			$set:
+
+				live: true
+
+
+	insertNewRace: ->
+
+		RaceList.insert
+			live      : false
+			length    : 5
+			users     : []
+			createdAt : new Date
+
+
+
+
 

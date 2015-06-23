@@ -1,0 +1,16 @@
+template( name="leaderboard" )
+
+	#leaderboard.page
+
+		h1 LEADERBOARD
+
+		ul.users
+
+			each users
+
+				li.user
+
+					.profile
+						img( src="{{ profile.image }}" )
+						span.name {{ profile.username }}
+

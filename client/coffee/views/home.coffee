@@ -72,7 +72,9 @@ class @HomeView
 			###
 			FACEBOOK LOGIN
 			###
-			'click .login': ->
+			'click .login-btn': ->
+
+				console.log 'login'
 
 				Meteor.loginWithFacebook {}, ( err, result ) ->
 

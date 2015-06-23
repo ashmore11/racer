@@ -62,7 +62,8 @@ class @AppRouter
 		### 
 		@ROUTE RACE LIST
 		###
-		@route '/races',
+		@route 'races',
+			path: '/races'
 			
 			action: ->
 
@@ -73,7 +74,8 @@ class @AppRouter
 		### 
 		@ROUTE RACE PREVIEW
 		###
-		@route '/races/:race_id',
+		@route 'race',
+			path: '/races/:race_id'
 			
 			data: -> 
 
@@ -100,6 +102,20 @@ class @AppRouter
 				Session.set 'current:race:id', @params.race_id
 
 				@render 'race'
+
+		### 
+		@ROUTE LEADERBOARD
+		###
+		@route 'leaderboard',
+			path: '/leaderboard'
+
+			data: -> users: Meteor.users.find {}, sort: 'profile.points': -1
+			
+			action: ->
+
+				return unless @ready()
+
+				@render 'leaderboard'
 
 					
 

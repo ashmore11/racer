@@ -57,11 +57,12 @@ template( name="home" )
 
 									a( href="races/{{ _id }}" ) {{ raceTime }}:00
 
-				a.race( href="{{ pathFor 'races' }}" ) FIND A RACE
+				a.race-btn( href="{{ pathFor 'races' }}" ) FIND A RACE
+				a.leaderboard-btn( href="{{ pathFor 'leaderboard' }}" ) LEADERBOARD
 		
 		else
 
-			.login
+			.login-btn
 
 				span LOGIN WITH FACEBOOK
 

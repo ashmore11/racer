@@ -23,7 +23,7 @@ class @RaceView
 			title: ->
 
 				index = 0
-				id    = RaceList.findOne( @_id )._id
+				id    = RaceList.findOne( @_id )?._id
 
 				for item, i in RaceList.find().fetch()
 
@@ -40,17 +40,17 @@ class @RaceView
 
 			userInRace: ->
 
-				race = RaceList.findOne @_id
+				race = RaceList.findOne( @_id )
 
-				return _.contains race.users, Meteor.userId()
+				return _.contains race?.users, Meteor.userId()
 
 			noUsers: ->
 
-				return RaceList.findOne( @_id ).users.length is 0
+				return RaceList.findOne( @_id )?.users.length is 0
 
 			raceLive: ->
 
-				return RaceList.findOne( Session.get 'current:race:id' ).live
+				return RaceList.findOne( Session.get 'current:race:id' )?.live
 
 			isUser: ->
 
@@ -71,10 +71,12 @@ class @RaceView
 			competitors: ->
 
 				# Get the array of user id's from the current race 
-				ids = RaceList.findOne( @_id ).users
+				users = RaceList.findOne( @_id )?.users
+
+				return unless users
 
 				# Fetch the users using the array of id's and sort by greatest distance
-				users = Meteor.users.find( { _id: { $in: ids } }, { sort: { 'profile.distance': -1 } } ).fetch()
+				users = Meteor.users.find( { _id: { $in: users } }, { sort: { 'profile.distance': -1 } } ).fetch()
 
 				return users
 

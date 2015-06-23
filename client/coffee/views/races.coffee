@@ -15,7 +15,7 @@ class @RacesView
 
 			races: ->
 
-				return RaceList.find live: $not: true
+				return RaceList.find { live: { $not: true } }, { sort: { createdAt: 1 } }
 
 			hours: ->
 
@@ -91,7 +91,7 @@ class @RacesView
 
 		Template.races.rendered = =>
 
-			$('ul.races').height ( $(window).height() - $('.top-bar').height() ) - 5
+			$('ol.races').height ( $(window).height() - $('.top-bar').height() ) - 5
 
 		Template.races.destroyed = ->
 

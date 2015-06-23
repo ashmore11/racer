@@ -15,11 +15,13 @@ class @Server
 	initRaces: ->
 
 		# Create initial races
-		for i in [ 0...5 ]
+		for i in [ 0...6 ]
 			
 			RaceList.insert
-				live  : false
-				users : []
+				live      : false
+				length    : 5
+				users     : []
+				createdAt : new Date
 
 
 	checkTime: =>
@@ -93,18 +95,11 @@ class @Server
 		# Reset the coords to an empty array
 		Meteor.call 'resetCoords'
 
-		# Remove finished race
-		RaceList.remove { live: true }
+		# Remove the finished race
+		Meteor.call 'removeLiveRace'
 
-		# Insert next race
-		RaceList.insert
-			live  : false
-			users : []
+		# Set the next race to live
+		Meteor.call 'setLiveRace'
 
-		console.log _.first( RaceList.find().fetch() ).live
-
-		# Get the id of the first race
-		id = _.first( RaceList.find().fetch() )._id
-
-		# Set next race live boolean
-		RaceList.update id, $set: live: true
+		# Add another race to the collection
+		Meteor.call 'insertNewRace'

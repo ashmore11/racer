@@ -32,6 +32,7 @@ template( name="header" )
 		header#nav( class="#{active}" )
 
 			ul
-				li.link: a( href="/" ) HOME
-				li.link: a( href="/races" ) FIND A RACE
+				li.link: a( href="{{ pathFor 'home' }}" ) HOME
+				li.link: a( href="{{ pathFor 'races' }}" ) FIND A RACE
+				li.link: a( href="{{ pathFor 'leaderboard' }}" ) LEADERBOARD
 				li.link: .logout LOGOUT
