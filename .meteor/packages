@@ -16,14 +16,8 @@ accounts-ui-unstyled
 service-configuration
 accounts-base
 accounts-password
-mrt:session-amplify
 mdg:geolocation
 chrismbeckett:fontawesome4
-random
-meteortoys:allthings
 fastclick
 dburles:google-maps
-reactive-var
 email
-raix:eventemitter
-matb33:collection-hooks
