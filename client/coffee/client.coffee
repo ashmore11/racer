@@ -8,9 +8,10 @@ class @Client
 
 	generateViews: ->
 
-		homeView  = new HomeView
-		racesView = new RacesView
-		raceView  = new RaceView
+		homeView        = new HomeView
+		racesView       = new RacesView
+		raceView        = new RaceView
+		leaderboardView = new LeaderboardView
 
 
 	bindHeader: ->

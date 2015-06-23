@@ -34,8 +34,7 @@ class @HomeView
 
 			raceTime: ->
 
-				index = 0
-				id    = RaceList.findOne( @_id )._id
+				id = RaceList.findOne( @_id )._id
 
 				for item, i in RaceList.find().fetch()
 
@@ -52,9 +51,10 @@ class @HomeView
 
 			rank: ->
 
-				rank = 0
+				query =
+					sort: 'profile.points': -1
 
-				for user, i in Meteor.users.find( {}, sort: 'profile.points': -1 ).fetch()
+				for user, i in Meteor.users.find( {}, query ).fetch()
 
 					if user._id is Meteor.userId()
 
@@ -107,7 +107,7 @@ class @HomeView
 				event.preventDefault()
 
 				name       = event.target.text.value.toUpperCase()
-				nameExists = Meteor.users.find( 'profile.username' : name ).fetch().length > 0
+				nameExists = Meteor.users.find( 'profile.username': name ).fetch().length > 0
 
 				if $('button').hasClass 'disabled'
 

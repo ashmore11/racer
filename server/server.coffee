@@ -74,12 +74,15 @@ class @Server
 	updatePoints: ->
 
 		# Get the array of user id's form the current live race
-		ids = RaceList.find( { live: true } ).fetch()[0]?.users
+		ids = RaceList.find( live: true ).fetch()[0]?.users
 
 		if ids?.length > 0
 
+			query =
+				sort: 'profile.distance': -1
+
 			# Fetch the users in the current race sorted by distance
-			sortedUsers = Meteor.users.find( { _id: { $in: ids } }, { sort: { 'profile.distance': -1 } } ).fetch()
+			sortedUsers = Meteor.users.find( _id: $in: ids, query ).fetch()
 
 			# Create variables for the top 3 positions
 			firstPlace  = sortedUsers[0]?._id

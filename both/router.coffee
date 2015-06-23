@@ -108,8 +108,6 @@ class @AppRouter
 		###
 		@route 'leaderboard',
 			path: '/leaderboard'
-
-			data: -> users: Meteor.users.find {}, sort: 'profile.points': -1
 			
 			action: ->
 

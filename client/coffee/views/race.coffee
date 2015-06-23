@@ -40,7 +40,7 @@ class @RaceView
 
 			userInRace: ->
 
-				race = RaceList.findOne( @_id )
+				race = RaceList.findOne @_id
 
 				return _.contains race?.users, Meteor.userId()
 
@@ -75,8 +75,11 @@ class @RaceView
 
 				return unless users
 
+				query =
+					sort: 'profile.distance': -1
+
 				# Fetch the users using the array of id's and sort by greatest distance
-				users = Meteor.users.find( { _id: { $in: users } }, { sort: { 'profile.distance': -1 } } ).fetch()
+				users = Meteor.users.find( _id: $in: users, query ).fetch()
 
 				return users
 
@@ -172,7 +175,7 @@ class @RaceView
 			geodesic      : false
 			strokeColor   : '#ADFF2F'
 			strokeOpacity : 1
-			strokeWeight  : 10
+			strokeWeight  : 8
 
 		@polyline.setMap @map
 

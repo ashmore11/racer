@@ -15,7 +15,10 @@ class @RacesView
 
 			races: ->
 
-				return RaceList.find { live: { $not: true } }, { sort: { createdAt: 1 } }
+				query =
+					sort: createdAt: 1
+
+				return RaceList.find live: $not: true, query
 
 			hours: ->
 

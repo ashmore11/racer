@@ -117,14 +117,20 @@ Meteor.methods
 
 	removeLiveRace: ->
 
-		id = _.first( RaceList.find( {}, { sort: { createdAt: 1 } } ).fetch() )._id
+		query =
+			sort: createdAt: 1
+
+		id = _.first( RaceList.find( {}, query ).fetch() )._id
 
 		RaceList.remove _id: id
 
 
 	setLiveRace: ->
 
-		id = _.first( RaceList.find( {}, { sort: { createdAt: 1 } } ).fetch() )._id
+		query =
+			sort: createdAt: 1
+
+		id = _.first( RaceList.find( {}, query ).fetch() )._id
 
 		RaceList.update id,
 

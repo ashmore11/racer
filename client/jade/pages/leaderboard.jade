@@ -4,13 +4,25 @@ template( name="leaderboard" )
 
 		h1 LEADERBOARD
 
+		.info
+			span RANK
+			.splitter.first
+			span USER
+			.splitter.last
+			span POINTS
+
 		ul.users
 
 			each users
 
 				li.user
 
+					.rank
+						span {{ rank }}
+
 					.profile
-						img( src="{{ profile.image }}" )
 						span.name {{ profile.username }}
+
+					.points
+						span {{ profile.points }}
 
