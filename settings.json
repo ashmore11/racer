@@ -1,0 +1,21 @@
+{
+	"cordova": {
+		"com.phonegap.plugins.facebookconnect": {
+			"APP_ID": "1603566783252297",
+			"APP_NAME": "racer",
+			"secret": "745ab6b368130965d6c7dd2aa4530a49"
+		}
+	},
+	"public": {
+		"facebook": {
+			"permissions": [
+				"public_profile"
+			],
+			"profileFields": [
+				"id",
+				"name",
+				"gender"
+			]
+		}
+	}
+}

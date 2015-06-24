@@ -11,9 +11,8 @@ underscore
 jquery
 iron:router
 http
-accounts-facebook
-accounts-ui-unstyled
 service-configuration
+accounts-ui-unstyled
 accounts-base
 accounts-password
 mdg:geolocation
@@ -21,3 +20,4 @@ chrismbeckett:fontawesome4
 fastclick
 dburles:google-maps
 email
+particle4dev:cordova-fb

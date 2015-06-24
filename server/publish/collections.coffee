@@ -1,1 +1,0 @@
-Meteor.publish 'races', -> return RaceList.find {}, sort: createdAt: 1

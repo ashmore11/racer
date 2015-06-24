@@ -1,6 +1,14 @@
 Meteor.methods
 
+	###
+	@_CLIENT_TASKS
+	###
+
 	updateUser: ( imgSrc, firstName ) ->
+
+		unless @userId
+
+			throw new Meteor.Error 401, 'You must be logged in'
 
 		Meteor.users.update _id: @userId,
 
@@ -8,10 +16,13 @@ Meteor.methods
 				
 				'profile.image'     : imgSrc
 				'profile.firstName' : firstName
-				'profile.points'    : 0
 
 
 	updateUsername: ( name ) ->
+
+		unless @userId
+
+			throw new Meteor.Error 401, 'You must be logged in'
 
 		Meteor.users.update _id: @userId, 
 			
@@ -22,21 +33,15 @@ Meteor.methods
 
 	updateCoords: ( lat, lon ) ->
 
+		unless @userId
+
+			throw new Meteor.Error 401, 'You must be logged in'
+
 		Meteor.users.update _id: @userId,
 
 			$addToSet:
 
 				'profile.raceCoords': { lat: lat, lon: lon }
-
-	resetCoords: ->
-
-		for user in Meteor.users.find().fetch()
-
-			Meteor.users.update _id: user._id, 
-
-				$set: 
-
-					'profile.raceCoords': []
 
 	
 	updateDistance: ( distance ) ->
@@ -80,21 +85,6 @@ Meteor.methods
 
 					users: @userId
 
-	
-	sendEmail: ( to, from, subject, text ) ->
-
-		check [ to, from, subject, text ], [ String ]
-
-		# Let other method calls from the same client start running,
-		# without waiting for the email sending to complete.
-		do @unblock
-
-		Email.send
-			to     : to
-			from   : from
-			subject: subject
-			text   : text
-
 
 	updatePoints: ( firstPlace, secondPlace, thirdPlace ) ->
 
@@ -113,6 +103,35 @@ Meteor.methods
 				$inc:
 
 					'profile.points': position.points
+
+	###
+	@_SERVER_TASKS
+	###
+
+	sendEmail: ( to, from, subject, text ) ->
+
+		check [ to, from, subject, text ], [ String ]
+
+		# Let other method calls from the same client start running,
+		# without waiting for the email sending to complete.
+		do @unblock
+
+		Email.send
+			to     : to
+			from   : from
+			subject: subject
+			text   : text
+
+
+	resetCoords: ->
+
+		for user in Meteor.users.find().fetch()
+
+			Meteor.users.update _id: user._id, 
+
+				$set: 
+
+					'profile.raceCoords': []
 
 
 	removeLiveRace: ->

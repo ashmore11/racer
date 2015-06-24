@@ -83,6 +83,12 @@ class @RaceView
 
 				return users
 
+			avatar: ->
+
+				id = Meteor.users.findOne( @_id ).profile.id
+
+				return "https://graph.facebook.com/" + id + "/picture/?type=large"
+
 			userIsMoving: ->
 
 				return Meteor.user().profile.distance > 0
@@ -157,14 +163,16 @@ class @RaceView
 
 			userInRace = _.contains race.users, Meteor.userId()
 
-			if userInRace and Geolocation.currentLocation() and race.live
+			if userInRace and race.live
 
-				lat = Geolocation.currentLocation().coords.latitude
-				lon = Geolocation.currentLocation().coords.longitude
-					
-				Meteor.call 'updateCoords', lat, lon
+				if Geolocation.currentLocation()
 
-				do @updateMap if @map
+					lat = Geolocation.currentLocation().coords.latitude
+					lon = Geolocation.currentLocation().coords.longitude
+						
+					Meteor.call 'updateCoords', lat, lon
+
+					do @updateMap if @map
 
 
 	createPath: ->

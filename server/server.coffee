@@ -43,7 +43,7 @@ class @Server
 		# Create array to hold mins and time
 		time = [ Number( mins ), Number( secs ) ]
 
-		console.log time
+		# console.log time
 
 		# Send email to users 15 minutes in advance of upcoming race
 		# if mins is 15 and secs is 0

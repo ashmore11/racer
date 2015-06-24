@@ -16,10 +16,6 @@ class @HomeView
 
 		Template.home.helpers
 
-			active_users: ->
-
-				return Meteor.users.find().count()
-
 			noUsername: ->
 
 				return !Meteor.user().profile.username?
@@ -64,6 +60,26 @@ class @HomeView
 
 				return rank
 
+			avatar: ->
+
+				return "https://graph.facebook.com/" + Meteor.user().profile.id + "/picture/?type=large"
+
+
+	fbLoginSuccess: ( result ) ->
+						
+		facebookConnectPlugin.getAccessToken ( token ) ->
+
+			Meteor.call 'addUser', token
+
+		, ( err ) ->
+
+			console.log "Could not get access token: " + err
+
+
+	fbLoginError: ( error ) ->
+
+		console.log error
+
 
 	events: ->
 
@@ -72,19 +88,23 @@ class @HomeView
 			###
 			FACEBOOK LOGIN
 			###
-			'click .login-btn': ->
+			'click .login-btn': =>
 
-				console.log 'login'
+				if Meteor.isCordova
 
-				Meteor.loginWithFacebook {}, ( err, result ) ->
+					do @nativeLogin
 
-					if err then throw new Meteor.Error 'Facebook login failed'
+				else
 
-					firstName = Meteor.user().services.facebook.first_name
-					fbId      = Meteor.user().services.facebook.id
-					imgSrc    = "http://graph.facebook.com/" + fbId + "/picture/?type=large"
+					Meteor.loginWithFacebook {}, ( err, result ) ->
 
-					Meteor.call 'updateUser', imgSrc, firstName
+						if err then throw new Meteor.Error 'Facebook login failed'
+
+						firstName = Meteor.user().services.facebook.first_name
+						fbId      = Meteor.user().services.facebook.id
+						imgSrc    = "https://graph.facebook.com/" + fbId + "/picture/?type=large"
+
+						Meteor.call 'updateUser', imgSrc, firstName
 
 			###
 			TEST USERNAME LENGTH
@@ -128,6 +148,27 @@ class @HomeView
 					else
 
 						Meteor.call 'updateUsername', name
+
+
+	nativeLogin: ->
+
+		options = {}
+
+		if Accounts.ui._options.requestPermissions[ 'facebook' ]
+
+			permissions = Accounts.ui._options.requestPermissions[ 'facebook' ]
+		
+			options.requestPermissions = permissions
+
+		if Accounts.ui._options.requestOfflineToken[ 'facebook' ]
+
+			token = Accounts.ui._options.requestOfflineToken[ 'facebook' ]
+		
+			options.requestOfflineToken = token
+
+		Meteor.loginWithFacebook options, ( err, result ) ->
+
+			if err then throw new Meteor.Error 'Facebook login failed'
 
 
 	animateAlertBox: ( alert ) ->

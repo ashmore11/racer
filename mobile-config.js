@@ -1,5 +1,3 @@
-// This section sets up some basic app metadata,
-// the entire section is optional.
 App.info({
   id: 'com.example.scott.racer',
   name: 'racer',
@@ -9,7 +7,6 @@ App.info({
   website: 'http://example.com'
 });
 
-// // Set up resources such as icons and launch screens.
 // App.icons({
 //   'iphone': 'icons/icon-60.png',
 //   'iphone_2x': 'icons/icon-60@2x.png',
@@ -22,17 +19,19 @@ App.info({
 //   // ... more screen sizes and platforms ...
 // });
 
-// Set PhoneGap/Cordova preferences
 App.setPreference('BackgroundColor', '0xff0000ff');
 App.setPreference('HideKeyboardFormAccessoryBar', true);
+App.setPreference('StatusBarOverlaysWebView', 'false');
+App.setPreference('StatusBarStyle', 'lightcontent');
+App.setPreference('StatusBarBackgroundColor', '#111111');
 
-// Pass preferences for a particular PhoneGap/Cordova plugin
 App.configurePlugin('com.phonegap.plugins.facebookconnect', {
   APP_ID: '1603566783252297',
-  API_KEY: '745ab6b368130965d6c7dd2aa4530a49',
   APP_NAME: 'racer'
 });
 
+App.accessRule('*');
 App.accessRule('https://*.googleapis.com/*');
 App.accessRule('https://*.google.com/*');
 App.accessRule('https://*.gstatic.com/*');
+App.accessRule('http://*.facebook.com/*');
