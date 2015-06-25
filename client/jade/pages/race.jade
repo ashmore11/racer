@@ -61,8 +61,45 @@ template( name="race" )
 
 			else
 
-				.join-race-btn LEAVE RACE
+				.invite-friends-overlay
+
+					.scroll-wrapper
+						
+						ul.friends
+							//- each friends
+							//- 	li.friend
+							//- 		span.name {{ profile.name }}
+
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+							li.friend
+								span.name SCOTT ASHMORE
+
+				.bottom-buttons
+
+					.invite-friends-btn INVITE FRIENDS
+					.join-race-btn LEAVE RACE
 
 		else
 
-			.join-race-btn JOIN RACE
+			.join-race-btn.not-in-race JOIN RACE

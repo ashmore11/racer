@@ -18,7 +18,7 @@ Meteor.methods
 				'profile.firstName' : firstName
 
 
-	updateUsername: ( name ) ->
+	setUsernameAndPoints: ( name ) ->
 
 		unless @userId
 
@@ -29,6 +29,30 @@ Meteor.methods
 			$set:
 				
 				'profile.username': name
+				'profile.points'  : 0
+
+
+	getFriends: ->
+
+		user  = Meteor.users.findOne @userId
+		token = user.services.facebook.accessToken
+
+		url = "https://graph.facebook.com/v2.0/me/friends/?redirect=false"
+
+		params =
+			access_token: token
+
+		ids = []
+
+		data = HTTP.get( url, params: params ).data.data
+			
+		ids.push item.id for item in data
+
+		Meteor.users.update _id: @userId,
+
+			$set:
+
+				'profile.friends': ids
 
 
 	updateCoords: ( lat, lon ) ->

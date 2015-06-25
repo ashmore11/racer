@@ -65,22 +65,6 @@ class @HomeView
 				return "https://graph.facebook.com/" + Meteor.user().profile.id + "/picture/?type=large"
 
 
-	fbLoginSuccess: ( result ) ->
-						
-		facebookConnectPlugin.getAccessToken ( token ) ->
-
-			Meteor.call 'addUser', token
-
-		, ( err ) ->
-
-			console.log "Could not get access token: " + err
-
-
-	fbLoginError: ( error ) ->
-
-		console.log error
-
-
 	events: ->
 
 		Template.home.events
@@ -105,6 +89,27 @@ class @HomeView
 						imgSrc    = "https://graph.facebook.com/" + fbId + "/picture/?type=large"
 
 						Meteor.call 'updateUser', imgSrc, firstName
+
+			###
+			SHARE ON FACEBOOK
+			###
+			'click .share-btn': ( event ) ->
+
+				do event.preventDefault
+
+				if Meteor.isCordova
+
+					message = 'Check out the racer app. Race me in real time!'
+					img     = null
+					link    = "https://geo.itunes.apple.com/gb/app/nike+-running/id387771637?mt=8&uo=6"
+					success = -> console.log '[ SHARE SUCCESS ]'
+					error   = ( err ) -> console.log '[ SHARE ERROR ] ~>', err
+
+					plugins.socialsharing.shareViaFacebook message, img, link, success, error
+
+				else
+
+					console.log '[ NOT CORDOVA ]'
 
 			###
 			TEST USERNAME LENGTH
@@ -147,7 +152,7 @@ class @HomeView
 
 					else
 
-						Meteor.call 'updateUsername', name
+						Meteor.call 'setUsernameAndPoints', name
 
 
 	nativeLogin: ->
@@ -169,6 +174,8 @@ class @HomeView
 		Meteor.loginWithFacebook options, ( err, result ) ->
 
 			if err then throw new Meteor.Error 'Facebook login failed'
+
+			Meteor.call 'getFriends'
 
 
 	animateAlertBox: ( alert ) ->

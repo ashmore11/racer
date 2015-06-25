@@ -54,8 +54,10 @@ template( name="home" )
 
 									a( href="races/{{ _id }}" ) {{ raceTime }}:00
 
-				a.race-btn( href="{{ pathFor 'races' }}" ) FIND A RACE
-				a.leaderboard-btn( href="{{ pathFor 'leaderboard' }}" ) LEADERBOARD
+				.bottom-buttons
+					a.race-btn( href="{{ pathFor 'races' }}" ) FIND A RACE
+					a.leaderboard-btn( href="{{ pathFor 'leaderboard' }}" ) LEADERBOARD
+					a.share-btn( href="#" data-network="facebook" ): span.fa.fa-facebook
 		
 		else
 

@@ -9,7 +9,9 @@
 	"public": {
 		"facebook": {
 			"permissions": [
-				"public_profile"
+				"public_profile",
+				"user_friends",
+				"email"
 			],
 			"profileFields": [
 				"id",

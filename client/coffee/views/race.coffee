@@ -93,6 +93,12 @@ class @RaceView
 
 				return Meteor.user().profile.distance > 0
 
+			friends: ->
+
+				friends = Meteor.user().profile.friends
+
+				return Meteor.users.find( 'profile.id': $in: friends ).fetch()
+
 			mapOptions: ->
 
 				if GoogleMaps.loaded() and Geolocation.currentLocation()
@@ -116,6 +122,10 @@ class @RaceView
 			'click .join-race-btn': ( event ) ->
 
 				Meteor.call 'updateUsersArray', @_id
+
+			'click .invite-friends-btn': ( event ) ->
+
+				return
 
 			'click li.currentUser': ( event ) =>
 

@@ -28,13 +28,13 @@ class @Server
 
 		time = new Date
 		mins = do time.getMinutes
-		mins = ( 59 - mins ) % 1
+		mins = ( 59 - mins ) % 2
 		secs = do time.getSeconds
 		
 		# Convert seconds to count down from 60 & if seconds is 60, make it 0
 		if secs != 60
 		
-			secs = ( 59 - secs ) % 30
+			secs = ( 59 - secs ) % 60
 		
 		else
 
