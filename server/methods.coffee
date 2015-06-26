@@ -147,6 +147,27 @@ Meteor.methods
 			text   : text
 
 
+	sendInvites: ( ids, hours ) ->
+
+		fromName = Meteor.users.findOne( @userId ).profile.name
+
+		Meteor.users.find( _id: $in: ids ).forEach ( doc, index ) ->
+
+			name    = doc.services.facebook.first_name
+			to      = doc.services.facebook.email
+			from    = 'dev.scottashmore@gmail.com'
+			subject = "#{fromName} has invited you to a race!"
+			text    = "Hi #{name}! Your friend #{fromName} has invited you to a race at #{hours}:00 today."
+
+			console.log to, from, subject, text
+
+			# Email.send
+			# 	to     : to
+			# 	from   : from
+			# 	subject: subject
+			# 	text   : text
+
+
 	resetCoords: ->
 
 		for user in Meteor.users.find().fetch()

@@ -59,7 +59,10 @@ class @Server
 
 	sendEmail: ->
 
-		for id in RaceList.find().fetch()[1].users
+		query =
+			sort: createdAt: 1
+
+		for id in RaceList.find( {}, query ).fetch()[1].users
 
 			user    = Meteor.users.findOne( _id: id ).services.facebook
 			name    = user.first_name

@@ -15,17 +15,18 @@
 		absolute  : top 50% left 50%
 		transform : translate(-50%, -60%)
 		width     : 70%
-		background: linear-gradient( top, rgba(0,0,0,0.9), rgba(0,0,0,0.8), rgba(0,0,0,0.9) )
-		box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.6)
+		background: linear-gradient( top, #333, #111 )
+		box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5)
 
 		h2
 			text-align: center
 			color     : white
-			padding   : 30px 0
+			padding   : 15px 30px
 			
 			span
 				display: block
 				margin : 10px 0
+				line-height: 24px
 		
 	.stats
 		position     : relative
@@ -138,34 +139,38 @@
 				
 	.invite-friends-overlay
 		absolute  : top 50% left 50%
-		transform : translate(-50%, -50%)
+		transform : translate(-50%, -40%)
 		width     : 80%
-		background: rgba(0,0,0,0.3)
-		overflow  : hidden
-		border    : 2px solid #111
 		color     : white
-		height    : 250px
-		
-		.scroll-wrapper
-			overflow: scroll
-			-webkit-overflow-scrolling: touch
+		visibility: hidden
+		opacity   : 0
 		
 		ul.friends
+			border                    : 1px solid #111
+			max-height                : 250px
+			overflow                  : scroll
+			-webkit-overflow-scrolling: touch
 			
 			li.friend
 				position     : relative
-				padding      : 12px 0
-				border-bottom: 1px solid rgba(0,0,0,0.1)
-				width        : 98%
-				margin       : 4px 1%
+				padding      : 15px 0
+				border-bottom: 1px solid #222
+				width        : 100%
+				margin       : 0
 				text-align   : center
-				background   : linear-gradient( top, #333, #111 )
+				
+				&:nth-child(odd)
+					background-color: rgba(0,0,0,0.9)
+					
+				&:nth-child(even)
+					background-color: rgba(0,0,0,0.9)
 				
 				&:active
 					box-shadow: inset 0px 0px 10px 0px rgba(0,0,0,0.5)
 					
-				a
-					display: block
+				&.selected
+					background-color: white
+					color           : black
 				
 				img
 					width         : 34px
@@ -179,13 +184,24 @@
 					vertical-align: middle
 					font-size     : 14px
 					letter-spacing: 1px
+					
+		.send-invite-btn
+			width     : 100%
+			margin-top: 10px
+			padding   : 20px 0
+			color     : white
+			background: linear-gradient( top, #333, #111 )
+			box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5)
+			text-align: center
+			
+			&:active
+				box-shadow: inset 0px 0px 10px 0px rgba(0,0,0,0.5)
 	
 	.join-race-btn.not-in-race
 		absolute  : bottom left
 		width     : 98%
 		padding   : 20px 0
 		color     : white
-		font-size : 20px
 		background: linear-gradient( top, #333, #111 )
 		box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5)
 		margin    : 1%
@@ -204,7 +220,6 @@
 			width     : 49.5%
 			padding   : 20px 0
 			color     : white
-			font-size : 20px
 			background: linear-gradient( top, #333, #111 )
 			box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5)
 			text-align: center

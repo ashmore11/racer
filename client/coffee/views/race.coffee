@@ -119,15 +119,23 @@ class @RaceView
 
 		Template.race.events
 
-			'click .join-race-btn': ( event ) ->
+			'click .join-race-btn': ->
 
 				Meteor.call 'updateUsersArray', @_id
 
-			'click .invite-friends-btn': ( event ) ->
+			'click .invite-friends-btn': =>
 
-				return
+				do @toggleFriendsOverlay
 
-			'click li.currentUser': ( event ) =>
+			'click li.friend': ( event ) ->
+
+				$( event.currentTarget ).toggleClass 'selected'
+
+			'click .send-invite-btn': =>
+
+				do @sendInvite
+
+			'click li.currentUser': =>
 
 				if RaceList.findOne( Session.get 'current:race:id' ).live
 
@@ -143,8 +151,67 @@ class @RaceView
 			do @setupMap
 			do @updateCoordsAndMap
 
-		# Template.race.rendered = ->
-		# Template.race.destroyed = ->
+			Session.set 'race:template:active', true
+		
+		Template.race.destroyed = ->
+
+			Session.set 'race:template:active', false
+
+
+
+
+	sendInvite: ->
+
+		ids = []
+
+		for item in $ 'li.friend'
+
+			if $( item ).hasClass 'selected'
+
+				ids.push $( item ).data 'id'
+
+		index = 0
+		id    = RaceList.findOne( @_id )?._id
+
+		for item, i in RaceList.find().fetch()
+
+			if item._id is id
+
+				index = i
+
+				break
+
+		hours = new Date().addHours index
+		hours = do hours.getHours
+
+		Meteor.call 'sendInvites', ids, hours
+
+
+	toggleFriendsOverlay: ->
+
+		el = $ '.invite-friends-overlay'
+
+		el.toggleClass 'active'
+
+		if el.hasClass 'active'
+
+			TweenMax.set el, top: '55%'
+
+			params =
+				autoAlpha: 1
+				top      : '50%'
+				ease     : Power4.easeOut
+
+			TweenMax.to el, 1, params
+
+		else
+
+			params =
+				autoAlpha: 0
+				top      : '55%'
+				ease     : Power4.easeOut
+
+			TweenMax.to el, 1, params
 
 
 	setupMap: ->
@@ -164,7 +231,9 @@ class @RaceView
 
 	updateCoordsAndMap: ->
 
-		Tracker.autorun () =>
+		Tracker.autorun ( computation ) =>
+
+			# do computation.stop unless Session.get 'race:template:active'
 
 			raceId = Session.get 'current:race:id'
 			race   = RaceList.findOne raceId

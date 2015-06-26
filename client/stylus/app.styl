@@ -8,6 +8,8 @@ body
 	-webkit-font-smoothing     : antialiased
 	background-color           : #111
 	font-family                : 'Oswald', sans-serif
+	font-size                  : 14px
+	color                      : #111
 	
 	*
 		-webkit-font-smoothing : antialiased
@@ -18,7 +20,7 @@ li
 
 a
 	text-decoration: none
-	color          : black
+	color          : #111
 	
 .wrapper
 	absolute: top left
@@ -28,13 +30,9 @@ a
 	overflow: hidden
 	
 .background
-	width              : 100%
-	height             : 100%
-	background-image   : url('images/bkg.jpg')
-	background-size    : cover
-	background-position: 48%
-	-webkit-filter     : blur(5px)
-	transform          : scale(1.05)
+	width     : 100%
+	height    : 100%
+	background: linear-gradient( top, #e08442, #972c12 )
 
 .page
 .container
@@ -42,24 +40,4 @@ a
 	width   : 100%
 	height  : 100%
 	overflow: hidden
-	
-@keyframes slideInLeft
-	0%
-		transform: translateX(100%)
-		
-	100%
-		transform: translateX(0)
-		
-.slideInLeft
-	animation: slideInLeft 1s cubic-bezier( 0.23, 1, 0.32, 1 ) both
-	
-@keyframes slideInRight
-	0%
-		transform: translateX(-100%)
-		
-	100%
-		transform: translateX(0)
-		
-.slideInRight
-	animation: slideInRight 1s cubic-bezier( 0.23, 1, 0.32, 1 ) both
 		
