@@ -34,6 +34,10 @@ Meteor.methods
 
 	getFriends: ->
 
+		unless @userId
+
+			throw new Meteor.Error 401, 'You must be logged in'
+
 		user  = Meteor.users.findOne @userId
 		token = user.services.facebook.accessToken
 
