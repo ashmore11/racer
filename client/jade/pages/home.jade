@@ -57,7 +57,9 @@ template( name="home" )
 				.bottom-buttons
 					a.race-btn( href="{{ pathFor 'races' }}" ) FIND A RACE
 					a.leaderboard-btn( href="{{ pathFor 'leaderboard' }}" ) LEADERBOARD
-					a.share-btn( href="#" data-network="facebook" ): span.fa.fa-facebook
+					a.share-btn( href="#" data-network="facebook" )
+						//- span.fa.fa-facebook
+						| SHARE ON FACEBOOK
 		
 		else
 

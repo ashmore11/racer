@@ -4,7 +4,13 @@ template( name="races" )
 
 		h1 CURRENT RACES
 
-		ol.races
+		.distance-selector
+			.distance( data-distance="1" ).selected 1k
+			.distance( data-distance="2" ) 2k
+			.distance( data-distance="5" ) 5k
+			.clear
+
+		ul.races
 
 			each races
 
@@ -12,3 +18,4 @@ template( name="races" )
 					span.time {{ hours }}:00
 					span.competitors COMPETITORS: {{ competitors }}
 					span.countdown {{ countdown }}
+					span.distance {{ length }}km

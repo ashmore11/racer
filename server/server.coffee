@@ -15,11 +15,15 @@ class @Server
 	initRaces: ->
 
 		# Create initial races
-		for i in [ 0...6 ]
+		for i in [ 0...15 ]
+
+			length = 1 if i < 6
+			length = 2 if i >= 6 and i < 11
+			length = 5 if i >= 11
 			
 			RaceList.insert
 				live      : false
-				length    : 5
+				length    : length
 				users     : []
 				createdAt : new Date
 
@@ -28,13 +32,13 @@ class @Server
 
 		time = new Date
 		mins = do time.getMinutes
-		mins = ( 59 - mins ) % 2
+		mins = ( 59 - mins ) % 1
 		secs = do time.getSeconds
 		
 		# Convert seconds to count down from 60 & if seconds is 60, make it 0
 		if secs != 60
 		
-			secs = ( 59 - secs ) % 60
+			secs = ( 59 - secs ) % 30
 		
 		else
 

@@ -6,11 +6,17 @@ class @LeaderboardView
 
 			users: ->
 
-				Meteor.users.find {}, sort: 'profile.points': -1
+				query =
+					sort: 'profile.points': -1
+
+				Meteor.users.find {}, query
 
 			rank: ->
 
-				for item, i in Meteor.users.find().fetch()
+				query =
+					sort: 'profile.points': -1
+
+				for item, i in Meteor.users.find( {}, query ).fetch()
 
 					if item._id is @_id
 

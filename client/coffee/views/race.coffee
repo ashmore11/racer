@@ -95,9 +95,21 @@ class @RaceView
 
 			friends: ->
 
-				friends = Meteor.user().profile.friends
+				Meteor.call 'getFriends', ( err, result ) ->
 
-				return Meteor.users.find( 'profile.id': $in: friends ).fetch()
+					if err then throw new Meteor.Error 'get:friends', err
+
+					if result.length > 0
+
+						friends = Meteor.users.find( 'profile.id' : $in: result ).fetch()
+
+						Session.set 'user:friends', friends
+
+					else
+
+						console.log 'NO FRIENDS, CREATE INVITE FRIEND CODE'
+
+				return Session.get 'user:friends'
 
 			mapOptions: ->
 
@@ -158,8 +170,6 @@ class @RaceView
 			Session.set 'race:template:active', false
 
 
-
-
 	sendInvite: ->
 
 		ids = []
@@ -195,11 +205,12 @@ class @RaceView
 
 		if el.hasClass 'active'
 
-			TweenMax.set el, top: '55%'
+			TweenMax.set el, top: '55%', scale: 0
 
 			params =
 				autoAlpha: 1
 				top      : '50%'
+				scale    : 1
 				ease     : Power4.easeOut
 
 			TweenMax.to el, 1, params
@@ -209,6 +220,7 @@ class @RaceView
 			params =
 				autoAlpha: 0
 				top      : '55%'
+				scale    : 0.9
 				ease     : Power4.easeOut
 
 			TweenMax.to el, 1, params

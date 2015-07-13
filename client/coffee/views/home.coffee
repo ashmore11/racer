@@ -88,7 +88,7 @@ class @HomeView
 						fbId      = Meteor.user().services.facebook.id
 						imgSrc    = "https://graph.facebook.com/" + fbId + "/picture/?type=large"
 
-						Meteor.call 'updateUser', imgSrc, firstName
+						Meteor.call 'updateUser', fbId, firstName
 
 			###
 			SHARE ON FACEBOOK
@@ -109,7 +109,7 @@ class @HomeView
 
 				else
 
-					console.log '[ NOT CORDOVA ]'
+					alert '[ NOT CORDOVA ]'
 
 			###
 			TEST USERNAME LENGTH

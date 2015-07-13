@@ -5,6 +5,9 @@ class @RacesView
 		countdownDep = new Deps.Dependency
 		countdown    = null
 
+		distanceDep = new Deps.Dependency
+		distance    = null
+
 		Date.prototype.addHours = ( h ) ->
 					
 			@setHours @getHours() + h
@@ -15,10 +18,12 @@ class @RacesView
 
 			races: ->
 
+				do distanceDep.depend
+
 				query =
 					sort: createdAt: 1
 
-				return RaceList.find live: $not: true, query
+				return RaceList.find length: distance or 1, live: $not: true, query
 
 			hours: ->
 
@@ -27,7 +32,7 @@ class @RacesView
 				index = 0
 				id    = RaceList.findOne( @_id )._id
 
-				for item, i in RaceList.find().fetch()
+				for item, i in RaceList.find( length: distance or 1 ).fetch()
 
 					if item._id is id
 
@@ -94,7 +99,7 @@ class @RacesView
 
 		Template.races.rendered = =>
 
-			$('ol.races').height ( $(window).height() - $('.top-bar').height() ) - 5
+			$('ul.races').height ( $(window).height() - ( $('.top-bar').height() + $('.distance-selector').height() ) )
 
 		Template.races.destroyed = ->
 
@@ -107,3 +112,12 @@ class @RacesView
 			'click .race': ( event ) ->
 
 				Router.go '/races/' + @_id
+
+			'click .distance': ( event ) ->
+
+				$( '.distance' ).removeClass 'selected'
+				$( event.currentTarget ).addClass 'selected'
+
+				distance = $( event.currentTarget ).data 'distance'
+
+				do distanceDep.changed

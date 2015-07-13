@@ -4,17 +4,17 @@ Meteor.methods
 	@_CLIENT_TASKS
 	###
 
-	updateUser: ( imgSrc, firstName ) ->
+	updateUser: ( id, firstName ) ->
 
 		unless @userId
 
-			throw new Meteor.Error 401, 'You must be logged in'
+			throw new Meteor.Error 'not:logged:in', 'You must be logged in'
 
 		Meteor.users.update _id: @userId,
 
 			$set: 
 				
-				'profile.image'     : imgSrc
+				'profile.id'        : id
 				'profile.firstName' : firstName
 
 
@@ -22,7 +22,7 @@ Meteor.methods
 
 		unless @userId
 
-			throw new Meteor.Error 401, 'You must be logged in'
+			throw new Meteor.Error 'not:logged:in', 'You must be logged in'
 
 		Meteor.users.update _id: @userId, 
 			
@@ -36,7 +36,7 @@ Meteor.methods
 
 		unless @userId
 
-			throw new Meteor.Error 401, 'You must be logged in'
+			throw new Meteor.Error 'not:logged:in', 'You must be logged in'
 
 		user  = Meteor.users.findOne @userId
 		token = user.services.facebook.accessToken
@@ -46,24 +46,19 @@ Meteor.methods
 		params =
 			access_token: token
 
-		ids = []
-
 		data = HTTP.get( url, params: params ).data.data
+		ids  = []
 			
 		ids.push item.id for item in data
 
-		Meteor.users.update _id: @userId,
-
-			$set:
-
-				'profile.friends': ids
+		return ids
 
 
 	updateCoords: ( lat, lon ) ->
 
 		unless @userId
 
-			throw new Meteor.Error 401, 'You must be logged in'
+			throw new Meteor.Error 'not:logged:in', 'You must be logged in'
 
 		Meteor.users.update _id: @userId,
 
@@ -76,7 +71,7 @@ Meteor.methods
 
 		unless @userId
 
-			throw new Meteor.Error 401, 'You must be logged in'
+			throw new Meteor.Error 'not:logged:in', 'You must be logged in'
 
 		Meteor.users.update _id: @userId,
 
@@ -89,13 +84,13 @@ Meteor.methods
 
 		unless @userId
 
-			throw new Meteor.Error 401, 'You must be logged in'
+			throw new Meteor.Error 'not:logged:in', 'You must be logged in'
 
 		race = RaceList.findOne id
 
 		unless race
 			
-			throw new Meteor.Error 404, 'The list was not found'
+			throw new Meteor.Error 'get:race', 'The race was not found'
 
 		if _.contains race.users, @userId
 		
@@ -185,12 +180,12 @@ Meteor.methods
 
 	removeLiveRace: ->
 
-		query =
-			sort: createdAt: 1
+		# query =
+		# 	sort: createdAt: 1
 
-		id = _.first( RaceList.find( {}, query ).fetch() )._id
+		# id = _.first( RaceList.find( {}, query ).fetch() )._id
 
-		RaceList.remove _id: id
+		RaceList.remove live: true
 
 
 	setLiveRace: ->
@@ -198,22 +193,36 @@ Meteor.methods
 		query =
 			sort: createdAt: 1
 
-		id = _.first( RaceList.find( {}, query ).fetch() )._id
+		for i in [ 0...3 ]
 
-		RaceList.update id,
+			switch i
+				when 0 then length = 1
+				when 1 then length = 2
+				when 2 then length = 5
 
-			$set:
+			id = _.first( RaceList.find( length: length, query ).fetch() )._id
 
-				live: true
+			RaceList.update id,
+
+				$set:
+
+					live: true
 
 
 	insertNewRace: ->
 
-		RaceList.insert
-			live      : false
-			length    : 5
-			users     : []
-			createdAt : new Date
+		for i in [ 0...3 ]
+
+			switch i
+				when 0 then length = 1
+				when 1 then length = 2
+				when 2 then length = 5
+
+			RaceList.insert
+				live      : false
+				length    : length
+				users     : []
+				createdAt : new Date
 
 
 
