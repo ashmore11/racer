@@ -15,11 +15,11 @@ class @Server
 	initRaces: ->
 
 		# Create initial races
-		for i in [ 0...15 ]
+		for i in [ 0...12 ]
 
-			length = 1 if i < 6
-			length = 2 if i >= 6 and i < 11
-			length = 5 if i >= 11
+			if i % 3 is 0 then length = 1
+			if i % 3 is 1 then length = 2
+			if i % 3 is 2 then length = 5
 			
 			RaceList.insert
 				live      : false
@@ -38,7 +38,7 @@ class @Server
 		# Convert seconds to count down from 60 & if seconds is 60, make it 0
 		if secs != 60
 		
-			secs = ( 59 - secs ) % 30
+			secs = ( 59 - secs ) % 15
 		
 		else
 
@@ -53,11 +53,12 @@ class @Server
 		# if mins is 15 and secs is 0
 
 		# 	do @sendEmail
+
+		do @updatePoints
 		
 		# If one hour has passed
 		if mins is 0 and secs is 0
 
-			do @updatePoints
 			do @updateRaces
 
 
@@ -78,26 +79,22 @@ class @Server
 			Meteor.call 'sendEmail', to, from, subject, text
 
 
-	updatePoints: ->
+	updatePoints: =>
 
-		# Get the array of user id's form the current live race
-		ids = RaceList.find( live: true ).fetch()[0]?.users
+		raceQuery = { sort: length: -1 }
+		userQuery = { sort: 'profile.distance': -1 }
 
-		if ids?.length > 0
+		RaceList.find( live: true, raceQuery ).forEach ( raceDoc, raceIndex ) ->
 
-			query =
-				sort: 'profile.distance': -1
+			Meteor.users.find( _id: $in: raceDoc.users, userQuery ).forEach ( userDoc, userIndex ) ->
 
-			# Fetch the users in the current race sorted by distance
-			sortedUsers = Meteor.users.find( _id: $in: ids, query ).fetch()
+				# if userDoc.profile.distance >= raceDoc.length
 
-			# Create variables for the top 3 positions
-			firstPlace  = sortedUsers[0]?._id
-			secondPlace = sortedUsers[1]?._id
-			thirdPlace  = sortedUsers[2]?._id
+				points = ( raceDoc.length * 2 ) * ( raceIndex + 1 ) - ( userIndex * 2 )
 
-			# Call the Meteor method to update users points
-			Meteor.call 'updatePoints', firstPlace, secondPlace, thirdPlace
+				if points < 0 then points = 0
+
+				Meteor.call 'updatePoints', userDoc._id, points
 
 
 	updateRaces: ->

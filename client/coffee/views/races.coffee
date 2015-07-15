@@ -50,7 +50,7 @@ class @RacesView
 				index = 0
 				id    = RaceList.findOne( @_id )._id
 
-				for item, i in RaceList.find().fetch()
+				for item, i in RaceList.find( length: distance or 1 ).fetch()
 
 					if item._id is id
 
@@ -98,6 +98,10 @@ class @RacesView
 				do countdownDep.changed
 
 		Template.races.rendered = =>
+
+			$('.distance').removeClass 'selected'
+			distance = distance or 1
+			$('.distance[data-distance="' + distance + '"').addClass 'selected'
 
 			$('ul.races').height ( $(window).height() - ( $('.top-bar').height() + $('.distance-selector').height() ) )
 

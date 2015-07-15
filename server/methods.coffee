@@ -108,28 +108,18 @@ Meteor.methods
 
 					users: @userId
 
-
-	updatePoints: ( firstPlace, secondPlace, thirdPlace ) ->
-
-		positions = [
-			{ id: firstPlace,  points: 5 }
-			{ id: secondPlace, points: 3 }
-			{ id: thirdPlace,  points: 1 }
-		]
-
-		for position in positions
-
-			break unless position.id
-
-			Meteor.users.update _id: position.id,
-
-				$inc:
-
-					'profile.points': position.points
-
 	###
 	@_SERVER_TASKS
 	###
+
+	updatePoints: ( id, points ) ->
+
+		Meteor.users.update _id: id,
+
+			$inc:
+
+				'profile.points': points
+				
 
 	sendEmail: ( to, from, subject, text ) ->
 
@@ -180,11 +170,6 @@ Meteor.methods
 
 	removeLiveRace: ->
 
-		# query =
-		# 	sort: createdAt: 1
-
-		# id = _.first( RaceList.find( {}, query ).fetch() )._id
-
 		RaceList.remove live: true
 
 
@@ -195,36 +180,25 @@ Meteor.methods
 
 		for i in [ 0...3 ]
 
-			switch i
-				when 0 then length = 1
-				when 1 then length = 2
-				when 2 then length = 5
+			length = 1 if i is 0
+			length = 2 if i is 1
+			length = 5 if i is 2
 
 			id = _.first( RaceList.find( length: length, query ).fetch() )._id
 
-			RaceList.update id,
-
-				$set:
-
-					live: true
+			RaceList.update id, $set: live: true
 
 
 	insertNewRace: ->
 
 		for i in [ 0...3 ]
 
-			switch i
-				when 0 then length = 1
-				when 1 then length = 2
-				when 2 then length = 5
+			length = 1 if i is 0
+			length = 2 if i is 1
+			length = 5 if i is 2
 
 			RaceList.insert
 				live      : false
 				length    : length
 				users     : []
 				createdAt : new Date
-
-
-
-
-
